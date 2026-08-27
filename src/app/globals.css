@@ -1,0 +1,259 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — extracted from the Figma file (Editora Solano).
+   Tailwind v4 is CSS-first: this @theme block IS the Tailwind configuration.
+   Every token below maps 1:1 to a Figma variable; do not add loose hex values
+   in JSX.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Colors — Figma: neutral/*, Brand/*, marca-d'agua                        */
+  --color-ink: #181713;
+  --color-bg: #fafafa;
+  --color-paper: #ffffff;
+  --color-muted: #71717a;
+  --color-mata: #283b2a;
+  --color-terra: #7a4e2d;
+  --color-areia: #d8cdb8;
+  --color-watermark: #d4d4d8;
+
+  /* Font families — bound to the next/font variables in src/lib/fonts.ts     */
+  --font-slab: var(--font-ibm-plex-serif), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+
+  /* Layout — Figma: 1440 frame, 60px gutters, 1320 content width            */
+  --spacing-gutter: 60px;
+  --spacing-section: 50px;
+
+  /* Elevation — Figma: shadow                                              */
+  --shadow-card: 0 4px 6px 0 #00000017;
+  /* Figma effect style `sombras capas de livros`. A separate token from
+     `shadow-card` on purpose: it is deeper and softer, and it belongs to book
+     covers specifically — cards, gallery main image — not to panels.         */
+  --shadow-cover: 0 10px 10px 0 #0000001a;
+  /* The lifted state of `shadow-cover`, for the hover of a cover that links
+     somewhere. Not a Figma style — the file draws no hover for a book card —
+     but derived from one rather than invented: same colour, same direction,
+     the offset and blur a cover 4px further from the page would cast.        */
+  --shadow-cover-raised: 0 18px 24px 0 #00000026;
+
+  /* MOTION
+     ------------------------------------------------------------------------
+     The CSS half of the motion system. Its other half is
+     `src/motion/presets.ts`, which holds the entrance timings — those belong
+     there because GSAP, not CSS, plays them, and a token no stylesheet reads
+     is a token that goes stale unnoticed. The two files cross-reference each
+     other; keep them in step.
+
+     What lives here is what CSS actually drives: the hover of a book cover.
+     The Figma file carries no motion spec at all, so neither value is
+     transcribed from it — both are documented decisions.                     */
+
+  /* The cubic-bezier form of GSAP's `power3.out` (easeOutCubic), so a CSS
+     hover and a GSAP entrance on the same card share one feel rather than
+     reading as two products.
+
+     Moved from `power2.out` when the entrances did. The curve spends longer
+     decelerating, which is what makes an element come to rest instead of
+     stopping — and the previous value was already within a rounding error of
+     easeOutCubic, so what changes here is mostly the label being true.       */
+  --ease-editorial: cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  /* Hover response. Long enough to read as a movement, short enough that the
+     cover has settled before the pointer does.                               */
+  --duration-hover: 300ms;
+
+  /* Radius — Figma: the 10px corner shared by the panels on Publique and
+     Contato (form cards and the ink "Sede" card). The 6px of the form fields
+     is Tailwind's own `rounded-md`, so it needs no token.                    */
+  --radius-panel: 10px;
+}
+
+/* ---------------------------------------------------------------------------
+   Typography utilities.
+
+   Figma reports letterSpacing as a PERCENTAGE of the font size (verified:
+   RegularText/20 is 20px with letterSpacing 10 and renders at 2px tracking),
+   and reports lineHeight 100 to mean "normal". Both are translated here.
+
+   Sizes use clamp() so the desktop scale degrades proportionally down to
+   mobile without scattering breakpoint variants across every component. The
+   upper bound of each clamp is the exact Figma desktop value.
+
+   THE SLAB FAMILY: the design system swapped Josefin Slab for IBM Plex Serif.
+   Every `Slab/*` variable moved family, and `Slab/h2` and `Slab/sub` dropped
+   from SemiBold to Regular and lost their 10% tracking at the same time — IBM
+   Plex Serif is a much wider face, so the letter spacing that made Josefin
+   Slab breathe is no longer wanted. No `Slab/*` variable carries tracking now,
+   and none of them is bolder than SemiBold: the slab scale runs 400, 500 and
+   600, which is exactly what `src/lib/fonts.ts` loads.
+--------------------------------------------------------------------------- */
+
+/* Hero display — Figma: Playfair Display SemiBold 64/90, tracking 3.2px */
+@utility text-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.25rem, 1.19rem + 4.42vw, 4rem);
+  line-height: 1.406;
+  letter-spacing: 0.05em;
+}
+
+/* Figma: H1/H2 — Playfair Display Regular 36, tracking 10% */
+@utility text-h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 1.45rem + 1.25vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+}
+
+/* Figma: Slab/h2 — IBM Plex Serif Regular 32, tracking 0. Line height stays
+   at 1.2 rather than the browser default: Figma reports 100 ("normal") and
+   1.2 is the value this scale has always used for the 32px heading. */
+@utility text-slab-h2 {
+  font-family: var(--font-slab);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 1.25rem + 1.04vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+/* Figma: Slab/sub — IBM Plex Serif Regular 20/25, tracking 0.
+
+   Also the entry title of the blog card, the agenda card and the timeline
+   step. Those three used to carry a loose Josefin Slab Bold 24 style; the
+   design system rebound them to this variable, which is what took the weight
+   out of them. There is no Bold slab anywhere in the file now. */
+@utility text-slab-sub {
+  font-family: var(--font-slab);
+  font-weight: 400;
+  font-size: clamp(1.0625rem, 0.98rem + 0.36vw, 1.25rem);
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+/* Figma: Slab/Menu — IBM Plex Serif SemiBold 14, tracking 0 */
+@utility text-slab-menu {
+  font-family: var(--font-slab);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: normal;
+  letter-spacing: 0;
+}
+
+/* Figma: Slab/small — IBM Plex Serif Medium 12, tracking 0.
+
+   The variable moved from Regular 400 to Medium 500 in the design library in
+   August 2026, at the same time the button components were rebound to it. At
+   12px the extra weight is what keeps these labels legible next to the body
+   face; it is not an emphasis. */
+@utility text-slab-small {
+  font-family: var(--font-slab);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: normal;
+  letter-spacing: 0;
+}
+
+/* Figma: RegularText/20 — Jost Light 20/25, tracking 10% */
+@utility text-body-lg {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(1.0625rem, 0.98rem + 0.36vw, 1.25rem);
+  line-height: 1.25;
+  letter-spacing: 0.1em;
+}
+
+/* Figma: RegularText/p — Jost Regular 14, tracking 2% */
+@utility text-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+}
+
+/* Figma: RegularText/12 — Jost Light 12, tracking 0 */
+@utility text-body-sm {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.75rem;
+  line-height: normal;
+  letter-spacing: 0;
+}
+
+/* Form field text — same RegularText/12 as above, with one technical
+   exception: below `md` the size holds at 16px, because iOS Safari zooms the
+   whole page when a field smaller than that takes focus. From `md` up it
+   returns to the 12px the design specifies, so the desktop type is untouched. */
+@utility text-field {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: normal;
+  letter-spacing: 0;
+
+  @media (width >= 48rem) {
+    font-size: 0.75rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion utilities.
+
+   Tailwind v4 has an `--ease-*` theme namespace, so `--ease-editorial` becomes
+   the `ease-editorial` class on its own. It has no `--duration-*` namespace —
+   `duration-*` only takes bare numbers — so the token needs this one line to
+   be reachable from JSX. Without it `duration-hover` is a class that does not
+   exist and the transition silently falls back to Tailwind's 150ms default.
+
+   Shaped like Tailwind's own `duration-*` output, which sets both the variable
+   the `transition-*` shorthand reads and the property itself.
+--------------------------------------------------------------------------- */
+@utility duration-hover {
+  --tw-duration: var(--duration-hover);
+  transition-duration: var(--duration-hover);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+}
+
+/* The design has no dedicated focus state; this is an accessibility baseline
+   drawn from the palette rather than an invented visual.
+
+   Deliberately OUTSIDE `@layer base`. Inside it, Tailwind's own reset also
+   lands in that layer and its `outline-color` wins on source order, which
+   quietly turned every focus ring into `currentColor` — a grey ring on grey
+   text, which is the one case the ring exists for. Unlayered rules beat every
+   layer, so the colour holds. */
+:focus-visible {
+  outline: 2px solid var(--color-mata);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

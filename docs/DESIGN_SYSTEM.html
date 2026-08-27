@@ -1,0 +1,2176 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Documento de referência visual e técnico do sistema de design da Editora Solano.">
+</head>
+<body>
+<title>Design System Editora Solano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&family=Jost:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,600&display=swap">
+
+<style>
+  /* =========================================================================
+     Este documento é construído com os tokens que ele documenta.
+     As cores da interface, as três famílias e a hairline de 1px são as mesmas
+     de src/app/globals.css — o documento é uma amostra do sistema, não uma
+     reprodução dele.
+
+     Uma distinção importante para quem for editar:
+     · CHROME (fundo, texto, réguas) usa variáveis de tema e vira no modo escuro.
+     · ESPÉCIME (swatch de cor, plaqueta do logo) usa o valor literal do token e
+       NÃO vira — um swatch de --color-ink precisa pintar #181713 nos dois modos,
+       senão deixa de ser um espécime. Todo espécime carrega hairline própria
+       para continuar legível sobre os dois fundos.
+     ====================================================================== */
+
+  :root {
+    /* Paleta oficial — valores literais, iguais ao @theme do projeto */
+    --ink: #181713;
+    --bg: #fafafa;
+    --paper: #ffffff;
+    --muted: #71717a;
+    --mata: #283b2a;
+    --terra: #7a4e2d;
+    --areia: #d8cdb8;
+    --watermark: #d4d4d8;
+
+    /* Chrome do documento — modo claro */
+    --ground: #fafafa;
+    --surface: #ffffff;
+    --surface-sunk: #f2f1ee;
+    --text: #181713;
+    --text-soft: #56544e;
+    --text-faint: #86847d;
+    --rule: rgba(113, 113, 122, 0.22);
+    --rule-strong: rgba(24, 23, 19, 0.32);
+    --accent: #283b2a;
+    --accent-soft: rgba(40, 59, 42, 0.09);
+    --flag: #7a4e2d;
+    --flag-soft: rgba(122, 78, 45, 0.1);
+
+    --slab: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --body: "Jost", ui-sans-serif, system-ui, sans-serif;
+    --display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, monospace;
+  }
+
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --ground: #131210;
+      --surface: #1b1a17;
+      --surface-sunk: #201f1b;
+      --text: #ece9e2;
+      --text-soft: #b4b0a6;
+      --text-faint: #8b887f;
+      --rule: rgba(216, 205, 184, 0.18);
+      --rule-strong: rgba(216, 205, 184, 0.34);
+      --accent: #8fb08f;
+      --accent-soft: rgba(143, 176, 143, 0.12);
+      --flag: #c99b6f;
+      --flag-soft: rgba(201, 155, 111, 0.12);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #131210;
+    --surface: #1b1a17;
+    --surface-sunk: #201f1b;
+    --text: #ece9e2;
+    --text-soft: #b4b0a6;
+    --text-faint: #8b887f;
+    --rule: rgba(216, 205, 184, 0.18);
+    --rule-strong: rgba(216, 205, 184, 0.34);
+    --accent: #8fb08f;
+    --accent-soft: rgba(143, 176, 143, 0.12);
+    --flag: #c99b6f;
+    --flag-soft: rgba(201, 155, 111, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--body);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- casca ---------- */
+  .shell { max-width: 1320px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3.75rem); }
+
+  .layout { display: grid; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  @media (min-width: 1080px) {
+    .layout { grid-template-columns: 208px minmax(0, 1fr); }
+  }
+
+  /* ---------- índice ---------- */
+  .index { position: sticky; top: 0; padding: 2.5rem 0; }
+  @media (max-width: 1079px) {
+    .index {
+      position: static;
+      padding-bottom: 0;
+      border-bottom: 1px solid var(--rule-strong);
+    }
+  }
+  .index h2 {
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0 0 1rem;
+    border: 0;
+    padding: 0;
+  }
+  .index ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.0625rem; }
+  @media (max-width: 1079px) {
+    .index ol { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 0 1.5rem; }
+  }
+  .index a {
+    display: flex;
+    gap: 0.625rem;
+    padding: 0.28rem 0;
+    font-family: var(--slab);
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    color: var(--text-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .index a:hover { color: var(--text); border-bottom-color: var(--rule); }
+  .index a b {
+    font-variant-numeric: tabular-nums;
+    font-weight: 400;
+    color: var(--text-faint);
+    min-width: 1.1rem;
+  }
+
+  /* ---------- seções ---------- */
+  main > section { padding: clamp(3rem, 7vw, 5.5rem) 0; border-bottom: 1px solid var(--rule); }
+  main > section:last-of-type { border-bottom: 0; }
+  main > section:first-of-type { padding-top: 2.5rem; }
+
+  .kicker {
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.75rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .kicker span { color: var(--text-faint); font-variant-numeric: tabular-nums; }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 1.3rem + 1.9vw, 2.625rem);
+    line-height: 1.14;
+    letter-spacing: 0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.02em;
+    margin: 3rem 0 0;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  h4 {
+    font-family: var(--slab);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 2rem 0 0.75rem;
+  }
+
+  p { max-width: 66ch; margin: 1.125rem 0 0; color: var(--text-soft); }
+  p.lede { font-size: 1.0625rem; color: var(--text); max-width: 60ch; }
+  strong, b { font-weight: 500; color: var(--text); }
+  a { color: var(--flag); }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    color: var(--text-soft);
+    background: var(--surface-sunk);
+    padding: 0.14em 0.36em;
+    border-radius: 2px;
+    word-break: break-word;
+  }
+
+  /* ---------- grade de plaquetas com hairline colapsada ----------
+     O mesmo truque que a grade de gêneros, de comunidades e do arquivo do
+     blog usam no site: 1px de padding inicial e cada célula puxada 1px para
+     cima e para a esquerda, de modo que bordas vizinhas viram uma régua só. */
+  .plates {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+    margin-top: 1.75rem;
+    padding: 1px 0 0 1px;
+  }
+  .plates > * { margin: -1px 0 0 -1px; border: 1px solid var(--rule); }
+
+  .plate { background: var(--surface); display: flex; flex-direction: column; }
+  .plate .field { min-height: 108px; display: flex; align-items: center; justify-content: center; }
+  .plate .caption { padding: 0.875rem 1rem 1rem; display: grid; gap: 0.28rem; }
+  .plate .name { font-family: var(--slab); font-weight: 600; font-size: 0.875rem; }
+  .plate .token { font-family: var(--mono); font-size: 0.6875rem; color: var(--text-faint); word-break: break-all; }
+  .plate .value { font-family: var(--mono); font-size: 0.75rem; color: var(--text-soft); font-variant-numeric: tabular-nums; }
+  .plate .use { font-size: 0.8125rem; line-height: 1.4; color: var(--text-soft); margin-top: 0.28rem; }
+
+  /* ---------- blocos de nota ---------- */
+  .note {
+    margin-top: 1.75rem;
+    padding: 1.125rem 1.25rem;
+    border-left: 2px solid var(--accent);
+    background: var(--accent-soft);
+    font-size: 0.9375rem;
+    color: var(--text-soft);
+    max-width: 74ch;
+  }
+  .note b { color: var(--text); }
+  .note.flag { border-left-color: var(--flag); background: var(--flag-soft); }
+  .note p { margin-top: 0.75rem; max-width: none; }
+  .note p:first-child { margin-top: 0; }
+
+  /* ---------- tabelas ---------- */
+  .scroller { overflow-x: auto; margin-top: 1.5rem; border: 1px solid var(--rule); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 580px; }
+  thead th {
+    text-align: left;
+    font-family: var(--slab);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    background: var(--surface-sunk);
+    padding: 0.75rem 0.875rem;
+    border-bottom: 1px solid var(--rule-strong);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 0.8125rem 0.875rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.45;
+    background: var(--surface);
+    color: var(--text-soft);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---------- capa ---------- */
+  .cover { padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(3rem, 6vw, 4.5rem); }
+  .cover .mark {
+    display: inline-flex;
+    padding: 1.375rem 1.75rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+  }
+  .cover .mark img { display: block; width: 220px; height: auto; }
+  .cover h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(2.5rem, 1.5rem + 4.2vw, 4.5rem);
+    line-height: 1.08;
+    letter-spacing: 0.01em;
+    margin: 2.25rem 0 0;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .cover .msg {
+    font-family: var(--slab);
+    font-weight: 400;
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+    line-height: 1.45;
+    color: var(--text-soft);
+    max-width: 46ch;
+    margin-top: 1.5rem;
+  }
+  .colophon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2.5rem;
+    margin-top: 2.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule-strong);
+    font-family: var(--slab);
+    font-size: 0.8125rem;
+    color: var(--text-faint);
+  }
+  .colophon b { font-weight: 600; color: var(--text-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ---------- utilitários de espécime ---------- */
+  .bar { height: 10px; background: var(--accent); }
+
+  /* Todo espécime de cor ganha um contorno interno: sem ele o swatch de Ink
+     desaparece contra o fundo escuro e deixa de ser um espécime. */
+  .swatches .field { box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.3); }
+  .chip-shadow { width: 66px; height: 88px; background: var(--paper); border: 1px solid var(--rule); }
+  .curve {
+    width: 84px; height: 54px;
+    border-left: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    position: relative;
+  }
+  .curve::after {
+    content: ""; position: absolute; inset: 0;
+    border-top: 2px solid var(--accent);
+    border-right: 2px solid transparent;
+    border-radius: 0 100% 0 0 / 0 100% 0 0;
+  }
+
+  /* ---------- famílias ---------- */
+  .specimens { display: grid; gap: 1px; margin-top: 1.75rem; background: var(--rule); border: 1px solid var(--rule); }
+  .specimen { background: var(--surface); padding: 1.5rem 1.5rem 1.375rem; }
+  .spec-sample { margin: 0; font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.375rem); line-height: 1.25; color: var(--text); max-width: none; }
+  .spec-meta { display: grid; gap: 0.28rem; margin-top: 1rem; padding-top: 0.875rem; border-top: 1px solid var(--rule); }
+  .spec-meta .name { font-family: var(--slab); font-weight: 600; font-size: 0.875rem; }
+  .spec-meta .token { font-family: var(--mono); font-size: 0.6875rem; color: var(--text-faint); }
+  .spec-meta .use { font-size: 0.875rem; color: var(--text-soft); line-height: 1.45; max-width: 68ch; }
+
+  /* ---------- escala tipográfica ---------- */
+  .scale { margin-top: 1.5rem; border: 1px solid var(--rule); }
+  .scale .row { padding: 1.75rem 1.5rem; border-bottom: 1px solid var(--rule); background: var(--surface); }
+  .scale .row:last-child { border-bottom: 0; }
+  .scale .sample { margin: 0; color: var(--text); max-width: 34ch; text-wrap: balance; }
+  .scale .meta,
+  .preset .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(126px, 1fr)); gap: 0.75rem 1.25rem; margin: 1.25rem 0 0; padding-top: 0.875rem; border-top: 1px solid var(--rule); }
+  .scale .meta .wide { grid-column: 1 / -1; }
+  .scale dt, .preset dt {
+    font-family: var(--slab); font-weight: 600; font-size: 0.625rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint);
+  }
+  .scale dd, .preset dd { margin: 0.2rem 0 0; font-size: 0.875rem; color: var(--text-soft); }
+
+  /* ---------- colunas e listas marcadas ---------- */
+  .cols { display: grid; gap: 1.75rem 3rem; margin-top: 1.75rem; }
+  @media (min-width: 720px) { .cols { grid-template-columns: 1fr 1fr; } }
+  .ticks, .crosses { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.625rem; }
+  .ticks li, .crosses li { position: relative; padding-left: 1.5rem; font-size: 0.9375rem; color: var(--text-soft); line-height: 1.45; }
+  .ticks li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-size: 0.8125rem; }
+  .crosses li::before { content: "✗"; position: absolute; left: 0; color: var(--flag); font-size: 0.8125rem; }
+
+  /* ---------- presets de motion ---------- */
+  .presets { display: grid; gap: 1px; margin-top: 1.75rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 860px) { .presets { grid-template-columns: 1fr 1fr; } }
+  .preset { background: var(--surface); padding: 1.375rem 1.5rem 1.5rem; }
+  .preset header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .preset .name { font-family: var(--mono); font-size: 0.9375rem; color: var(--text); }
+  .play {
+    font-family: var(--slab); font-weight: 600; font-size: 0.6875rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); background: transparent;
+    border: 1px solid currentColor; border-radius: 4px;
+    padding: 0.34rem 0.7rem; cursor: pointer;
+  }
+  .play:hover:not(:disabled) { background: var(--accent-soft); }
+  .play:disabled { opacity: 0.4; cursor: not-allowed; }
+  .preset .stage { margin-top: 1.125rem; padding: 1.25rem; background: var(--surface-sunk); min-height: 96px; display: flex; align-items: center; }
+  .preset .tile { display: grid; gap: 0.5rem; width: 100%; }
+  .preset .tile.cards { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+  .preset .tile span { display: block; height: 12px; background: var(--accent); opacity: 0.85; }
+  .preset .tile.hero span:first-child { width: 34%; }
+  .preset .tile.hero span:last-child { width: 78%; height: 20px; }
+  .preset .tile.fadeup span:nth-child(1) { width: 46%; }
+  .preset .tile.fadeup span:nth-child(2) { width: 88%; }
+  .preset .tile.fadeup span:nth-child(3) { width: 66%; }
+  .preset .tile.fadein span { height: 52px; }
+  .preset .tile.cards span { height: 52px; }
+  .preset .uses { font-size: 0.875rem; margin-top: 1rem; max-width: none; }
+
+  /* Reproduz os valores reais de src/motion/presets.ts.
+     A curva é a forma CSS do power3.out — o mesmo --ease-editorial. */
+  @keyframes ds-rise-12 { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes ds-rise-16 { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes ds-rise-18 { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes ds-fade { from { opacity: 0; } to { opacity: 1; } }
+
+  .tile.run span { animation-timing-function: cubic-bezier(.215, .61, .355, 1); animation-fill-mode: both; }
+  .tile.hero.run span { animation-name: ds-rise-12; animation-duration: 1s; }
+  .tile.fadeup.run span { animation-name: ds-rise-16; animation-duration: .9s; }
+  .tile.fadeup.run span:nth-child(2) { animation-delay: .08s; }
+  .tile.fadeup.run span:nth-child(3) { animation-delay: .16s; }
+  .tile.fadein.run span { animation-name: ds-fade; animation-duration: 1s; }
+  .tile.cards.run span { animation-name: ds-rise-18; animation-duration: .75s; }
+  .tile.cards.run span:nth-child(2) { animation-delay: .12s; }
+  .tile.cards.run span:nth-child(3) { animation-delay: .24s; }
+  .tile.cards.run span:nth-child(4) { animation-delay: .36s; }
+
+  .reduced-note { margin-top: 1.5rem; padding: 1rem 1.125rem; background: var(--flag-soft); border-left: 2px solid var(--flag); font-size: 0.9375rem; max-width: 74ch; }
+
+  .rules { display: grid; gap: 1px; margin-top: 1.5rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 960px) { .rules { grid-template-columns: repeat(3, 1fr); } }
+  .rules article { background: var(--surface); padding: 1.375rem 1.5rem 1.5rem; }
+  .rules h4 { margin-top: 0; color: var(--text); font-size: 0.875rem; text-transform: none; letter-spacing: 0.01em; }
+  .rules p { font-size: 0.875rem; max-width: none; }
+
+  /* ---------- catálogo de componentes ---------- */
+  .comps { display: grid; gap: 1px; margin-top: 1.75rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 700px) { .comps { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1200px) { .comps { grid-template-columns: repeat(3, 1fr); } }
+  .comp { background: var(--surface); display: flex; flex-direction: column; }
+  .comp .demo { padding: 1.75rem 1.5rem; background: var(--surface-sunk); display: flex; align-items: center; justify-content: center; min-height: 104px; }
+  .comp .body { padding: 1.125rem 1.5rem 1.5rem; display: grid; gap: 0.5rem; }
+  .comp .name { font-family: var(--slab); font-weight: 600; font-size: 0.9375rem; }
+  .comp p { margin: 0; font-size: 0.875rem; max-width: none; }
+  .comp p.rule,
+  .card-doc p.rule,
+  .panel-doc p.rule {
+    font-size: 0.8125rem; color: var(--text-faint);
+    padding-left: 0.75rem; border-left: 1px solid var(--rule-strong);
+  }
+
+  /* demos miniatura */
+  .acc { width: 100%; max-width: 220px; font-family: var(--slab); }
+  .acc-row { display: flex; justify-content: space-between; font-size: 0.875rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
+  .acc-row .caret { color: var(--text-faint); }
+  .acc-body { font-family: var(--body); font-size: 0.75rem; color: var(--text-soft); padding-top: 0.5rem; }
+  .backlink { font-family: var(--body); font-size: 0.875rem; color: var(--text-soft); }
+  .crumbs { font-family: var(--slab); font-size: 0.75rem; color: var(--text-soft); }
+  .crumbs i { color: var(--text-faint); font-style: normal; padding: 0 0.28rem; }
+  .crumbs b { color: var(--text); font-weight: 400; }
+  .empty { font-family: var(--body); font-weight: 300; font-size: 0.9375rem; color: var(--text-faint); text-align: center; }
+  .pagenav { display: inline-flex; align-items: center; gap: 0.75rem; font-family: var(--slab); font-size: 0.75rem; }
+  .pagenav i { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--rule-strong); font-style: normal; }
+  .panel-demo { border-radius: 10px; background: var(--ink); color: #fafafa; padding: 1.125rem 1.25rem; font-family: var(--slab); font-size: 0.8125rem; }
+  .heading-demo { display: grid; gap: 0.375rem; text-align: left; }
+  .heading-demo .eyebrow { font-family: var(--slab); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
+  .heading-demo .title { font-family: var(--slab); font-size: 1.125rem; }
+  .heading-demo .desc { font-size: 0.75rem; color: var(--text-soft); }
+  .container-demo { display: flex; align-items: center; gap: 0.5rem; width: 100%; font-family: var(--mono); font-size: 0.625rem; color: var(--text-faint); }
+  .container-demo i { width: 22px; height: 34px; background: var(--flag-soft); border: 1px dashed var(--rule-strong); }
+  .container-demo span { flex: 1; text-align: center; padding: 0.5rem 0; border: 1px solid var(--rule-strong); }
+
+  /* ---------- cartões documentados ---------- */
+  .cards-doc { display: grid; gap: 1px; margin-top: 1.75rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 900px) { .cards-doc { grid-template-columns: 1fr 1fr; } }
+  .card-doc { background: var(--surface); padding: 1.5rem; }
+  .card-doc h4 { margin: 0 0 1rem; font-size: 0.9375rem; text-transform: none; letter-spacing: 0.01em; color: var(--text); font-weight: 600; }
+  .card-doc h4 span { font-family: var(--body); font-weight: 300; font-size: 0.8125rem; color: var(--text-faint); margin-left: 0.5rem; }
+  .card-doc p { font-size: 0.875rem; max-width: none; }
+  /* Os cartões são mostrados sobre o fundo real da página (#fafafa) nos dois
+     temas — é a superfície em que eles existem no site. */
+  .card-demo { background: #fafafa; border: 1px solid rgba(113, 113, 122, 0.2); padding: 1.5rem; }
+  .card-demo .hint { margin: 0.875rem 0 0; font-size: 0.6875rem; font-family: var(--slab); letter-spacing: 0.06em; text-transform: uppercase; color: #71717a; text-align: center; }
+
+  /* espécimes de cartão — cores literais, é o produto sendo mostrado */
+  .bookcard, .genrecard, .blogcard, .postcard {
+    background: #fafafa; color: #181713; display: grid; cursor: pointer;
+    font-family: var(--body); font-weight: 300;
+  }
+  .bookcard { gap: 11px; width: 168px; margin: 0 auto; }
+  .bookcard .cover-art {
+    aspect-ratio: 237 / 322; background: linear-gradient(150deg, #2b2a26, #565049 60%, #7a4e2d);
+    box-shadow: 0 10px 10px 0 #0000001a;
+    transition: transform .3s cubic-bezier(.215,.61,.355,1), box-shadow .3s cubic-bezier(.215,.61,.355,1);
+  }
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) {
+    .bookcard:hover .cover-art, .bookcard:focus-visible .cover-art { transform: translateY(-4px) scale(1.01); }
+  }
+  .bookcard:hover .cover-art, .bookcard:focus-visible .cover-art { box-shadow: 0 18px 24px 0 #00000026; }
+  .bookcard .genre { font-family: var(--slab); font-weight: 500; font-size: 12px; }
+  .bookcard .ttl { font-size: 17px; }
+  .bookcard .auth { font-size: 14px; color: #71717a; }
+
+  .genrecard, .blogcard {
+    border: 1px solid rgba(113,113,122,.2); padding: 20px; gap: 20px;
+    transition: background-color .2s cubic-bezier(.215,.61,.355,1), color .2s cubic-bezier(.215,.61,.355,1);
+  }
+  .genrecard { text-align: center; box-shadow: 0 4px 6px 0 #00000017; }
+  .genrecard .idx { font-family: var(--slab); font-weight: 600; font-size: 14px; color: #71717a; text-align: left; }
+  .genrecard .ttl { font-family: var(--slab); font-size: 22px; }
+  .genrecard .dsc { font-size: 14px; }
+  .genrecard:hover, .genrecard:focus-visible { background: #181713; color: #fafafa; }
+
+  .blogcard { box-shadow: 0 4px 6px 0 #00000017; text-align: left; }
+  .blogcard .meta { font-family: var(--slab); font-weight: 600; font-size: 14px; color: #71717a; }
+  .blogcard .ttl { font-family: var(--slab); font-size: 22px; }
+  .blogcard .exc { font-size: 14px; }
+  .blogcard .act { font-family: var(--slab); font-weight: 600; font-size: 14px; color: #7a4e2d; text-align: right; transition: color .2s cubic-bezier(.215,.61,.355,1); }
+  .blogcard:hover, .blogcard:focus-visible { background: #181713; color: #fafafa; }
+  .blogcard:hover .act, .blogcard:focus-visible .act { color: #d8cdb8; }
+
+  .postcard { border-bottom: 1px solid rgba(113,113,122,.2); padding: 20px 0; gap: 10px; transition: color .2s cubic-bezier(.215,.61,.355,1); }
+  .postcard .meta { font-family: var(--slab); font-weight: 500; font-size: 12px; color: #71717a; }
+  .postcard .ttl { font-family: var(--slab); font-size: 22px; }
+  .postcard .exc { font-size: 14px; }
+  .postcard:hover, .postcard:focus-visible { color: #283b2a; }
+
+  /* ---------- botões ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    font-family: var(--slab); font-weight: 500; font-size: 12px; white-space: nowrap;
+    padding: 10px; border-radius: 4px; cursor: pointer;
+    transition: background-color .2s, border-color .2s, filter .2s;
+  }
+  .btn i { font-style: normal; }
+  .btn.solid { background: #181713; color: #fafafa; }
+  .btn.solid:hover, .btn.solid.is-hover { background: #283b2a; }
+  .btn.terra { background: #7a4e2d; color: #fafafa; }
+  .btn.terra:hover { background: #283b2a; }
+  .btn.mata { background: #283b2a; color: #fafafa; }
+  .btn.mata:hover { filter: brightness(1.25); }
+  .btn.outline { border: 1px solid currentColor; color: var(--text); }
+  .btn.outline:hover { background: rgba(128,128,128,.08); }
+  .btn.linkv { border-radius: 0; border-bottom: 1px solid #d8cdb8; padding: 5px 0; color: var(--text); }
+  .btn.linkv:hover { border-bottom-color: #7a4e2d; }
+  .btn.is-focus { outline: 2px solid #283b2a; outline-offset: 2px; }
+  .btn.is-disabled { opacity: .5; cursor: not-allowed; }
+
+  .btn-grid { display: grid; gap: 1px; margin-top: 1.75rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 760px) { .btn-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1180px) { .btn-grid { grid-template-columns: repeat(3, 1fr); } }
+  .btn-cell { background: var(--surface); }
+  .btn-stage { padding: 1.75rem 1.5rem; background: var(--surface-sunk); display: flex; align-items: center; justify-content: center; min-height: 92px; }
+  .btn-stage.dark { background: #181713; }
+  .btn-info { padding: 1.125rem 1.5rem 1.375rem; display: grid; gap: 0.34rem; }
+  .btn-info .name { font-family: var(--mono); font-size: 0.875rem; color: var(--text); }
+  .btn-info .value { font-family: var(--mono); font-size: 0.6875rem; color: var(--text-faint); }
+  .btn-info .use { font-size: 0.8125rem; color: var(--text-soft); line-height: 1.45; }
+
+  .states { display: grid; gap: 1px; margin-top: 1.5rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 700px) { .states { grid-template-columns: repeat(4, 1fr); } }
+  .state { background: var(--surface); }
+  .state > span { display: block; padding: 0.875rem 1rem 1.125rem; font-family: var(--slab); font-size: 0.75rem; color: var(--text-soft); text-align: center; }
+
+  /* ---------- formulários ---------- */
+  .form-demo { display: grid; gap: 1.25rem; margin-top: 1.75rem; padding: 1.75rem; border: 1px solid var(--rule); background: var(--surface); max-width: 460px; }
+  .field-row { display: grid; gap: 0.375rem; }
+  .field-row label { font-family: var(--slab); font-weight: 600; font-size: 0.875rem; }
+  .field-row label i { font-style: normal; color: var(--text-faint); }
+  .shell-box {
+    border: 1px solid var(--rule); border-radius: 6px; padding: 8px 12px;
+    font-family: var(--body); font-weight: 300; font-size: 0.875rem; color: var(--text-soft);
+    background: transparent; display: flex; justify-content: space-between; align-items: center;
+  }
+  .shell-box.err { border-color: var(--flag); }
+  .shell-box.upload { gap: 1rem; }
+  .shell-box .pick { font-family: var(--slab); font-weight: 500; font-size: 0.75rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+  .err-msg { font-size: 0.75rem; color: var(--flag); }
+
+  /* ---------- estados vazios ---------- */
+  .two-up { display: grid; gap: 1px; margin-top: 1.75rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 820px) { .two-up { grid-template-columns: 1fr 1fr; } }
+  .panel-doc { background: var(--surface); padding: 1.5rem; }
+  .panel-doc h4 { margin-top: 0; }
+  .verdict { font-family: var(--slab); font-weight: 600; font-size: 0.8125rem; margin: 0 0 1rem; }
+  .verdict.ok { color: var(--accent); }
+  .verdict.off { color: var(--flag); }
+  .empty-demo { background: var(--surface-sunk); padding: 1.5rem; display: grid; gap: 1rem; }
+  .empty-demo .e-title { font-family: var(--display); font-weight: 600; font-size: 1.375rem; }
+  .empty-demo .e-msg { font-size: 0.9375rem; color: var(--text-faint); }
+  .empty-demo.ghosted .e-title { opacity: .28; }
+  .empty-demo .e-ghost { font-family: var(--mono); font-size: 0.6875rem; color: var(--text-faint); }
+
+  /* ---------- layout ---------- */
+  .layout-demo { margin-top: 1.75rem; }
+  .layout-demo .frame { display: flex; align-items: stretch; border: 1px solid var(--rule-strong); background: var(--surface); }
+  .layout-demo .edge {
+    width: clamp(28px, 5vw, 60px); display: grid; place-items: center;
+    background: var(--flag-soft); font-family: var(--mono); font-size: 0.625rem; color: var(--text-faint);
+  }
+  .layout-demo .content { flex: 1; display: grid; place-items: center; padding: 2.25rem 1rem; font-family: var(--mono); font-size: 0.6875rem; color: var(--text-soft); }
+  .layout-demo .frame-label { display: block; margin-top: 0.5rem; font-family: var(--mono); font-size: 0.625rem; color: var(--text-faint); text-align: center; }
+
+  /* ---------- breakpoints ---------- */
+  .bp-grid { display: grid; gap: 1px; margin-top: 1.75rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 760px) { .bp-grid { grid-template-columns: repeat(3, 1fr); } }
+  .bp { background: var(--surface); padding: 1.5rem; }
+  .bp .w { display: block; font-family: var(--display); font-weight: 600; font-size: 2.25rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .bp .l { display: block; margin-top: 0.34rem; font-family: var(--slab); font-weight: 600; font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+  .bp p { font-size: 0.875rem; max-width: none; }
+
+  /* ---------- fluxo de navegação ---------- */
+  .flow { display: flex; align-items: stretch; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap; }
+  .flow .step { flex: 1 1 240px; border: 1px solid var(--rule); background: var(--surface); padding: 1rem 1.125rem; display: grid; gap: 0.28rem; }
+  .flow .s-name { font-family: var(--mono); font-size: 0.875rem; color: var(--text); }
+  .flow .s-note { font-size: 0.8125rem; color: var(--text-soft); }
+  .flow .arrow { display: grid; place-items: center; color: var(--text-faint); font-size: 1.125rem; }
+  td.ok-cell { color: var(--accent); font-weight: 500; }
+  td.no-cell { color: var(--flag); font-weight: 500; }
+
+  /* ---------- fazer / evitar ---------- */
+  .dd { display: grid; gap: 1px; margin-top: 1.75rem; background: var(--rule); border: 1px solid var(--rule); }
+  @media (min-width: 820px) { .dd { grid-template-columns: 1fr 1fr; } }
+  .dd-col { background: var(--surface); padding: 1.5rem; }
+  .dd-col h4 { margin-top: 0; font-size: 0.8125rem; }
+  .dd-col.do h4 { color: var(--accent); }
+  .dd-col.dont h4 { color: var(--flag); }
+  .dd-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .dd-col li { position: relative; padding-left: 1.5rem; font-size: 0.875rem; color: var(--text-soft); line-height: 1.5; }
+  .dd-col.do li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); }
+  .dd-col.dont li::before { content: "✗"; position: absolute; left: 0; color: var(--flag); }
+
+  /* ---------- checklist ---------- */
+  .checklist { list-style: none; counter-reset: q; margin: 1.75rem 0 0; padding: 0; display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .checklist li { counter-increment: q; background: var(--surface); padding: 1.375rem 1.5rem; display: grid; grid-template-columns: 2.25rem 1fr; gap: 0 0.5rem; }
+  .checklist li::before {
+    content: counter(q); grid-row: 1 / span 2;
+    font-family: var(--display); font-weight: 600; font-size: 1.5rem;
+    color: var(--text-faint); font-variant-numeric: tabular-nums; line-height: 1.1;
+  }
+  .checklist h4 { margin: 0; font-size: 0.9375rem; text-transform: none; letter-spacing: 0.01em; color: var(--text); font-weight: 600; }
+  .checklist p { margin: 0.4rem 0 0; font-size: 0.875rem; max-width: none; }
+
+  /* ---------- fecho ---------- */
+  .closing { margin-top: 4rem; padding: 2rem 0 4rem; border-top: 1px solid var(--rule-strong); }
+  .closing p { font-family: var(--slab); font-size: 0.8125rem; color: var(--text-faint); max-width: 76ch; }
+</style>
+
+<div class="shell">
+
+  <!-- ===================== 1 · CAPA ===================== -->
+  <header class="cover">
+    <div class="mark">
+      <img alt="Editora Solano" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTc2IiBoZWlnaHQ9IjQyIiB2aWV3Qm94PSIwIDAgMTc2IDQyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoKPGcgaWQ9IkhvbWUiIGNsaXAtcGF0aD0idXJsKCNjbGlwMF8zNTRfNDMxKSI+Cgo8ZyBpZD0iU2VjdGlvbjEiPgo8ZyBpZD0iRnJhbWUgMTAiPgo8ZyBpZD0iTmF2YmFyIj4KPG1hc2sgaWQ9InBhdGgtMS1pbnNpZGUtMV8zNTRfNDMxIiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0tNjIgLTMyLjY5NjZIMTM3OFY3NS4zMDM0SC02MlYtMzIuNjk2NloiLz4KPC9tYXNrPgo8cGF0aCBkPSJNMTM3OCA3NS4zMDM0Vjc0LjMwMzRILTYyVjc1LjMwMzRWNzYuMzAzNEgxMzc4Vjc1LjMwMzRaIiBmaWxsPSIjMTgxNzEzIiBmaWxsLW9wYWNpdHk9IjAuMiIgbWFzaz0idXJsKCNwYXRoLTEtaW5zaWRlLTFfMzU0XzQzMSkiLz4KPGcgaWQ9IkxvZ28gcCI+CjxnIGlkPSJDbGlwIHBhdGggZ3JvdXAiPgo8bWFzayBpZD0ibWFzazBfMzU0XzQzMSIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjgwIiB5PSI5IiB3aWR0aD0iMjEiIGhlaWdodD0iMjEiPgo8ZyBpZD0iMDBiMmUwZDg2NSI+CjxwYXRoIGlkPSJWZWN0b3IiIGQ9Ik04MC40NzIxIDkuMjUyNjdIMTAwLjA3OVYyOS45NjRIODAuNDcyMVY5LjI1MjY3WiIgZmlsbD0id2hpdGUiLz4KPC9nPgo8L21hc2s+CjxnIG1hc2s9InVybCgjbWFzazBfMzU0XzQzMSkiPgo8ZyBpZD0iR3JvdXAiPgo8cGF0aCBpZD0iVmVjdG9yXzIiIGQ9Ik05MC4zNjQ3IDE4LjkxMkM5MC40NTgyIDE4Ljg5NjIgOTAuNTQ4OCAxOC45MDkyIDkwLjYzMzYgMTguOTUwOUM5MC43MTg1IDE4Ljk5NCA5MC43ODMyIDE5LjA1NzMgOTAuODI3OCAxOS4xNDIyQzkwLjk4NiAxOS4zNzgxIDkxLjAyNDkgMTkuNjMyNiA5MC45NDQzIDE5LjkwNDVDOTAuNjI2NCAyMC44NjUyIDg5Ljc2NzggMjEuMDIzNSA4OS4wNzYgMjAuNDc1NUM4OC41Mjk0IDIwLjAzOTcgODguMzI2NiAxOS40OTQ2IDg4LjQzMDIgMTguODEyOEM4OC40ODA1IDE4LjQ4NjMgODguNDIwMSAxOC4xMzgyIDg4LjU5MTMgMTcuODIzM0M4OC43Nzk3IDE3LjQ3NjYgODguOTc4MiAxNy4xNTQ1IDg5LjQwNTMgMTcuMDYxQzg5LjUxMDMgMTcuMDI5MyA4OS42MTEgMTYuOTg2MiA4OS43MDc0IDE2LjkzM0M5MC4yNzEyIDE2LjY2NTQgOTAuODQ1MSAxNi42OTcxIDkxLjQzOTEgMTYuODMzN0M5Mi4zNDIzIDE3LjA0MjMgOTIuNzIyIDE3LjcxNjggOTIuOTY1MSAxOC40OTkzQzkzLjAyMjYgMTguNjg3NyA5Mi45NDUgMTguOTIyMSA5Mi45MTYyIDE5LjEzMzVDOTIuODYzIDE5LjUxMzMgOTIuODUgMTkuOTA3MyA5Mi43MzUgMjAuMjY4NEM5Mi41MTY0IDIwLjk2MDIgOTIuMjUzMSAyMS42NjkyIDkxLjU5MDEgMjIuMDU5QzkwLjg3MSAyMi40ODQ3IDkwLjEwNTggMjIuODQyOSA4OS4yMjcgMjIuNzUyM0M4OC42NTE3IDIyLjY4NDcgODguMTIyNCAyMi40ODkxIDg3LjY0MDYgMjIuMTY4M0w4Ny4zMzQyIDIxLjk3MTNDODcuMDQ2NiAyMS43OCA4Ni44Mjc5IDIxLjUyODMgODYuNjc4NCAyMS4yMTc2Qzg2LjQ3MjcgMjAuODA2MyA4Ni4zMzAzIDIwLjM3NDggODYuMjQ5NyAxOS45MjE3Qzg2LjIzOTcgMTkuODg1OCA4Ni4yMzI1IDE5Ljg0OTggODYuMjI4MiAxOS44MTM5Qzg2LjIwOCAxOS4yNTg3IDg2LjE2MiAxOC43MDM1IDg2LjE3OTMgMTguMTQ5OEM4Ni4yMDggMTcuNjQyIDg2LjMzNzUgMTcuMTYwMiA4Ni41NjkgMTYuNzA1N0M4Ni44MDY0IDE2LjE5OTQgODcuMjAxOSAxNS44MzQxIDg3LjU2ODcgMTUuNDQyOUM4Ny45MTM4IDE1LjA2ODkgODguMzMzOCAxNC44MjMgODguODI4NiAxNC43MDA3Qzg5LjI0NzEgMTQuNTkxNCA4OS42NjU3IDE0LjQ4MzYgOTAuMTA3MiAxNC42MDczQzkwLjI2ODMgMTQuNjUzMyA5MC40NDY3IDE0LjYzNDYgOTAuNjEyMSAxNC42Njc3QzkwLjg2MjMgMTQuNzA2NSA5MS4xMDY4IDE0Ljc3MTIgOTEuMzQyNyAxNC44NjE4QzkxLjcwOCAxNS4wMjQ0IDkyLjA0NiAxNS4yNDAxIDkyLjQwMjcgMTUuNDE5OUM5Mi43MjYzIDE1LjU5MzkgOTIuOTk4MiAxNS44Mjg0IDkzLjIxNjggMTYuMTIzMkM5My41NTYyIDE2LjU1MDQgOTMuOTA4NiAxNi45Njc1IDk0LjEzNDQgMTcuNDY2NkM5NC4zMTEzIDE3Ljg1OTIgOTQuNDM3OSAxOC4yNzYzIDk0LjU5NzYgMTguNjc2MkM5NC43NDI4IDE5LjA2MzEgOTQuODE5MSAxOS40NjE1IDk0LjgyMzQgMTkuODc0M0M5NC44Mzc3IDIwLjI4NDIgOTQuNzI3IDIwLjY3NjggOTQuNjU1MSAyMS4wNzI0Qzk0LjU5MDQgMjEuNDIxOSA5NC40NDM3IDIxLjczNTQgOTQuMjE3OCAyMi4wMTAxQzk0LjA2NTQgMjIuMjAyOCA5My45OTkyIDIyLjQ2MDMgOTMuODg5OSAyMi42ODMyQzkzLjgzOTYgMjIuNzc4MiA5My43NzQ5IDIyLjg2NDUgOTMuNjk4NiAyMi45NDIxQzkzLjQ2ODUgMjMuMTg4MSA5My4yMjQgMjMuNDE4MiA5Mi45NjUxIDIzLjYzMzlDOTIuNjQ3MiAyMy44OTcxIDkyLjMwNDkgMjQuMTIzIDkxLjkzNjcgMjQuMzA5OUM5MS40Mzc2IDI0LjU1ODggOTAuOTE3IDI0Ljc1IDkwLjM3NDcgMjQuODgzOEM4OS4yNDU3IDI1LjEzNTUgODguMTI5NiAyNS4xNDk5IDg3LjA1MzcgMjQuNTc2Qzg2LjU5MzUgMjQuMzE0MiA4Ni4xNTYzIDI0LjAxOCA4NS43NDIgMjMuNjg4NkM4NS4yNjMxIDIzLjMzMTkgODQuOTg1NSAyMi44MTcgODQuNjg0OSAyMi4zMTVDODQuMjAzMSAyMS41MDgyIDgzLjk5MTYgMjAuNjIyMiA4My45MDM5IDE5LjcwMTdDODMuODUwNyAxOS4xNzk2IDgzLjg4ODEgMTguNjY0NyA4NC4wMTMyIDE4LjE1NDFDODQuMjAxNiAxNy40MzM1IDg0LjQxNDUgMTYuNzE1OCA4NC42NDc1IDE2LjAwNjdDODQuNzU4MiAxNS43MDE4IDg0LjkwMDYgMTUuNDExMyA4NS4wNzMyIDE1LjEzNjVDODUuMjk5IDE0Ljc1NCA4NS41NDIxIDE0LjM3NDMgODUuODAyNCAxNC4wMTlDODUuOTcyMiAxMy44MDQ3IDg2LjE1NDggMTMuNjAwNSA4Ni4zNDkgMTMuNDA3N0M4Ni40MDk0IDEzLjM1MDIgODYuNDY1NSAxMy4yODgzIDg2LjUxNDQgMTMuMjIwN0M4Ni42MTM2IDEzLjA2MjUgODYuNzQ3NCAxMi45NDYgODYuOTE4NSAxMi44Njk4Qzg3LjA0OCAxMi44MDY1IDg3LjE2NTkgMTIuNzI0NSA4Ny4yNzA5IDEyLjYyMzlDODcuNTQ4NSAxMi4zODY1IDg3Ljg2MjEgMTIuMjA5NiA4OC4yMDg3IDEyLjA5MzFDODguNjU4OSAxMS45MjA1IDg5LjEwNjIgMTEuNzY2NiA4OS42MTEgMTEuNzYwOUM4OS44ODI5IDExLjc2MDkgOTAuMTQ3NSAxMS42NzE3IDkwLjQxNzkgMTEuNzk0QzkwLjUwMjggMTEuODE1NSA5MC41ODYyIDExLjgxNTUgOTAuNjcxIDExLjc5NEM5MC45OTAzIDExLjc0MDggOTEuMjk4MSAxMS43MzkzIDkxLjU4MjkgMTEuOTMwNkM5MS42NjA2IDExLjk2MzcgOTEuNzQyNiAxMS45ODM4IDkxLjgyNzQgMTEuOTkxQzkyLjA5MzUgMTIuMDYwMSA5Mi4zNzQgMTIuMDc1OSA5Mi42MDEyIDEyLjI3NThDOTIuNjY1OSAxMi4zMzYyIDkyLjc0MzYgMTIuMzYzNSA5Mi44MzEzIDEyLjM1NDlDOTMuMDc0NCAxMi4yODU5IDkzLjI3IDEyLjQwMzggOTMuNDQ2OSAxMi41MTQ2QzkzLjgxMjMgMTIuNzMxNyA5NC4yNDY2IDEyLjg1OTcgOTQuNTE3IDEzLjIyNzlDOTQuNTMyOCAxMy4yNDgxIDk0LjU1MTUgMTMuMjYyNSA5NC41NzQ1IDEzLjI3MjVDOTUuMDg5NCAxMy40ODk3IDk1LjMyOTYgMTMuOTU3MiA5NS41OTE0IDE0LjQwNTlDOTUuNjg3OCAxNC41NzEzIDk1LjgzNTkgMTQuNzA1MSA5NS45MjY1IDE0Ljg3MTlDOTYuMTA2MyAxNS4xODQgOTYuMjYzMSAxNS41MDc2IDk2LjM5NjkgMTUuODQxM0M5Ni41MDMzIDE2LjE2MzUgOTYuNTkxIDE2LjQ5IDk2LjY2MTUgMTYuODIyMkM5Ni44MDgyIDE3LjM5MDMgOTYuNzU2NCAxNy45NzI4IDk2Ljc3MDggMTguNTQ4MkM5Ni43OTA5IDE5LjE2MjMgOTYuNzcyMiAxOS43NzY1IDk2LjcxNjIgMjAuMzg3N0M5Ni42NTcyIDIwLjg1MzcgOTYuNTY4IDIxLjMxMjUgOTYuNDQ4NiAyMS43NjdDOTYuMzcxIDIyLjEwNzkgOTYuMjQ4NyAyMi40MzU4IDk2LjE3MjUgMjIuNzc2N0M5Ni4wNzE4IDIzLjIxMjUgOTUuODM3NCAyMy41NzUgOTUuNTc1NiAyMy45MjE2Qzk0LjkwMSAyNC44MTc2IDk0LjEwMjggMjUuNTg4NiA5My4xODIzIDI2LjIzMjlDOTIuNjg2MSAyNi41Nzk1IDkyLjE2NjkgMjYuODg3MyA5MS42MjQ2IDI3LjE1NjNDOTEuMTAxMSAyNy40MTY2IDkwLjUyIDI3LjQ5MjkgODkuOTM2MSAyNy41NTE4Qzg5LjIyNTYgMjcuNjI1MiA4OC41MzA5IDI3LjUyNzQgODcuODMzMyAyNy40NzEzQzg3LjcyMjUgMjcuNDcxMyA4Ny42MTMyIDI3LjQ3ODUgODcuNTAzOSAyNy40OTQzQzg3LjIyNDkgMjcuNTIwMiA4Ni45NTE2IDI3LjQ5MjkgODYuNjgyNyAyNy40MTA5Qzg2LjQ4MTMgMjcuMzQzMyA4Ni4yNTU1IDI3LjM0OSA4Ni4wNDEyIDI3LjMxMzFDODUuODc1OCAyNy4yOTQ0IDg1LjcxMzMgMjcuMjU5OSA4NS41NTUxIDI3LjIxMUM4NS4yMDg0IDI3LjA4MDEgODQuODY3NiAyNi45MzA1IDg0LjUyNTIgMjYuNzg4MUM4NC40NjkxIDI2Ljc2NTEgODQuMzk3MiAyNi43NTUgODQuMzYxMyAyNi43MTQ3Qzg0LjA4OTQgMjYuNDA4NCA4My42ODI0IDI2LjI2MDMgODMuNDQyMiAyNS45MTA3QzgzLjIyOTMgMjUuNjA0NCA4Mi45NzE5IDI1LjMyNjggODIuNzM3NCAyNS4wMzQ4QzgyLjUxMDIgMjQuNzM3MSA4Mi4zMjE4IDI0LjQxNjQgODIuMTcyMiAyNC4wNzQxQzgyLjAzMTMgMjMuODA5NCA4MS44NjczIDIzLjU1OTEgODEuNjgwMyAyMy4zMjQ3QzgxLjUwNDggMjMuMTA5IDgxLjM4MTEgMjIuODY3MyA4MS4zMTA3IDIyLjU5NjlDODEuMjMwMSAyMi4yMjczIDgxLjAzMTYgMjEuODg1IDgwLjg4NzggMjEuNTI2OUM4MC44Mzc1IDIxLjM5ODggODAuNzk3MiAyMS4yNjggODAuNzY1NiAyMS4xMzU2QzgwLjU3NTcgMjAuMzM3NCA4MC40OTY2IDE5LjUyOTEgODAuNTI4MiAxOC43MDkyQzgwLjU0ODQgMTguMjIxNyA4MC41MjgyIDE3LjcyODMgODAuNjIxNyAxNy4yNDA4QzgwLjY3MzUgMTYuOTcxOCA4MC42NjkyIDE2LjY3NTUgODAuNzEyMyAxNi4zOTM2QzgwLjgyMTcgMTUuNzExOSA4MC45ODEzIDE1LjA1MTcgODEuMzM4IDE0LjQ0NzZDODEuNTI3OSAxNC4xMjExIDgxLjY1ODcgMTMuNzY1OSA4MS44ODYgMTMuNDY4MUM4Mi4yMDEgMTMuMDQ5NiA4Mi40Njk5IDEyLjU5NjUgODIuODU0IDEyLjIyMTFDODMuMTE4NiAxMS45NTk0IDgzLjQxNDkgMTEuNzM1IDgzLjY3MDkgMTEuNDU4OEM4My44ODIzIDExLjI0MDIgODQuMTI0IDExLjA2MTkgODQuMzk0NCAxMC45MTk1Qzg0Ljk1OTYgMTAuNjE4OSA4NS41NDIxIDEwLjM0MjcgODYuMTI2MSAxMC4wNzY3Qzg2LjU2MzMgOS44NzI0MiA4Ny4wMTA2IDkuNjkxMTkgODcuNDY4IDkuNTMyOThDODcuNzU4NSA5LjQ0NjY5IDg4LjA1NDggOS4zOTA1OSA4OC4zNTY4IDkuMzY2MTRDODguODUwMiA5LjMwMTQyIDg5LjM0NDkgOS4yNjQwMiA4OS44NDI2IDkuMjUyNTJDOTAuNjY2NyA5LjI1MjUyIDkxLjQ4MzcgOS4yOTcxIDkyLjI3MzMgOS42MDQ5QzkyLjYwNyA5LjczNTc4IDkyLjk3MjMgOS43OTE4OCA5My4zMjA0IDkuODkxMTJDOTMuNDQ4NCA5LjkyODUxIDkzLjU3MDYgOS45Nzc0MSA5My42ODcxIDEwLjA0MDdDOTQuMTM1OSAxMC4yNzM3IDk0LjYxMDUgMTAuNDU2NCA5NS4wMjc2IDEwLjc1MTJDOTUuMzkxNSAxMS4wMDg3IDk1Ljc5MjggMTEuMjEgOTYuMTU1MiAxMS40NzQ3Qzk2LjYxMTIgMTEuODE0MSA5Ny4wMzY5IDEyLjE4ODEgOTcuMzQzMiAxMi42ODE0Qzk3LjQyMzggMTIuNzg3OCA5Ny41MjQ1IDEyLjg3MTIgOTcuNjQ2NyAxMi45MjczQzk4LjEwNDEgMTMuMTgzNCA5OC40NDY0IDEzLjU0NTggOTguNjczNyAxNC4wMTc2Qzk4Ljg2NzggMTQuNDE4OCA5OS4wOTk0IDE0Ljc5NzEgOTkuMzY5OCAxNS4xNTA5Qzk5LjYwNzEgMTUuNDIxMyA5OS43NDUyIDE1LjczMzQgOTkuNzgyNiAxNi4wOTAxQzk5Ljc5OTggMTYuMzQ3NiA5OS45MDQ4IDE2LjYwMDcgOTkuOTY5NiAxNi44NTI0Qzk5Ljk2OTYgMTYuODYzOSA5OS45ODY4IDE2Ljg3NTQgOTkuOTgzOSAxNi44ODU1Qzk5LjkzNzkgMTcuMTgxOCAxMDAuMDIgMTcuNDY5NCAxMDAuMDQzIDE3Ljc2MTRDMTAwLjA1NyAxNy45MTM5IDEwMC4wMjQgMTguMDY5MiAxMDAuMDM2IDE4LjIyMTdDMTAwLjA1NiAxOC40NzYyIDEwMC4wMjYgMTguNzIzNiA5OS45NDUxIDE4Ljk2NjdDOTkuODU1OSAxOS4yMzQyIDk5Ljg4MzMgMTkuNTM3NyA5OS44MzU4IDE5LjgyMUM5OS43NzExIDIwLjE4NDkgOTkuODQ3MyAyMC41NjYxIDk5LjY5MzQgMjAuOTIxM0M5OS41OTg1IDIxLjE0IDk5LjU0MDkgMjEuMzc1OCA5OS40NTkgMjEuNjAxNkM5OS4zOTU3IDIxLjcxODEgOTkuMzQyNSAyMS44MzkgOTkuMjk2NCAyMS45NjI3Qzk5LjE0MTEgMjIuNzA5MSA5OC43MzI2IDIzLjM0NjMgOTguMzkxOCAyNC4wMDkzQzk4LjE5NzYgMjQuMzg3NiA5Ny45MTI4IDI0LjcyMjcgOTcuNjc4NCAyNS4wODA5Qzk3LjQ4OTkgMjUuMzY4NSA5Ny4zMjAyIDI1LjY2NzcgOTcuMTMwNCAyNS45NTI1Qzk3LjAzODMgMjYuMDkzNCA5Ni45MzA1IDI2LjIyNDMgOTYuODA5NiAyNi4zNDIyQzk2LjQwMjYgMjYuNzM5MiA5NS45OTg0IDI3LjEzNzYgOTUuNTc0MiAyNy41MTNDOTUuMjY2NCAyNy43ODQ4IDk0LjkzMTIgMjguMDI2NSA5NC42MDYyIDI4LjI3NTNDOTQuNTQgMjguMzI3MSA5NC40NjA5IDI4LjM2MDEgOTQuMzg3NiAyOC40MDlDOTMuOTU3NSAyOC43MTY4IDkzLjU0MDQgMjkuMDQzMyA5My4wOTQ1IDI5LjMyNjdDOTIuODYxNSAyOS40NjA0IDkyLjYxNDIgMjkuNTU2OCA5Mi4zNTI0IDI5LjYxNDNDOTEuNDE4OSAyOS44NjAzIDkwLjQ3MTEgMjkuOTYyNCA4OS41MDg5IDI5LjkyMjFDODkuMjU1OCAyOS45MTA2IDg4Ljk5NjkgMjkuODk2MiA4OC44MDI3IDI5LjY3NzZDODguODU1OSAyOS40OTM1IDg5LjAyMTMgMjkuNDYwNCA4OS4xNjY2IDI5LjQyMTZDODkuMzg1MiAyOS4zNjg0IDg5LjYxODIgMjkuMzI2NyA4OS44NDU1IDI5LjI5MjJDOTAuMjgyNyAyOS4yMjc0IDkwLjc0NzMgMjkuMjI2IDkxLjE3MDEgMjkuMDk2NUM5MS44MDAxIDI4LjkwNTMgOTIuNDc0NiAyOC44NTQ5IDkzLjA2NTggMjguNTM0MkM5My4xMzA1IDI4LjUwMTEgOTMuMTkyMyAyOC40NjUxIDkzLjI1MTMgMjguNDI0OUM5My42NTg0IDI4LjE0MyA5NC4wNzY5IDI3Ljg4MTIgOTQuNDY1MiAyNy41NjkxQzk0LjcyOTkgMjcuMzQwNCA5NC45Nzg3IDI3LjA5NDUgOTUuMjA4OCAyNi44MzEyQzk1LjU2NTUgMjYuNDU0NCA5NS45MTUgMjYuMDY5IDk2LjI2MzEgMjUuNjg2NEM5Ni4zNDUxIDI1LjYxMyA5Ni40MDg0IDI1LjUyNTMgOTYuNDUwMSAyNS40MjQ2Qzk2LjU3MDkgMjQuOTUgOTYuOTYyMSAyNC42Mzc5IDk3LjE2NjMgMjQuMjE1Qzk3LjIyNjcgMjQuMDg3IDk3LjMwMyAyMy45NjQ3IDk3LjM3MiAyMy44NDExQzk3LjM5NjUgMjMuNzg2NCA5Ny40MjgxIDIzLjczNDYgOTcuNDY0MSAyMy42ODcyQzk3Ljg4NCAyMy4yNDI3IDk4LjA3MSAyMi42ODc1IDk4LjI0MzYgMjIuMTE5NEM5OC4zNDI5IDIxLjc4NTcgOTguNTAxMSAyMS40NjY0IDk4LjYxMDQgMjEuMTRDOTguNjk5NSAyMC44NzgyIDk4LjgxMDMgMjAuNjA2MyA5OC44MTMyIDIwLjMzNzRDOTguODIwNCAxOS42MDUzIDk4LjkzODMgMTguODcwMyA5OC44MTMyIDE4LjEzNjhDOTguNzU1NiAxNy43OTMxIDk4LjcyODMgMTcuNDM5MiA5OC42MjMzIDE3LjEwOTlDOTguNTI3IDE2LjgwOTMgOTguMzQyOSAxNi41MzYgOTguMTk5IDE2LjI0OThDOTguMTA4NCAxNi4wNyA5OC4wMTQ5IDE1Ljg4ODggOTcuOTMxNSAxNS43MDYxQzk3LjgyMjIgMTUuNDU0NCA5Ny42NzQgMTUuMjA4NSA5Ny42MTUxIDE0Ljk0MzhDOTcuNTM4OSAxNC41OTU4IDk3LjMwNzMgMTQuMzY3MSA5Ny4wNzU3IDE0LjE0ODRDOTYuNzg4MSAxMy44ODk2IDk2LjU1NzkgMTMuNTg2MSA5Ni4zODY4IDEzLjIzOEM5Ni4yMzg2IDEyLjkzMDIgOTUuOTc4MyAxMi42NzQyIDk1Ljc1MjUgMTIuNDA4MUM5NS42MjE2IDEyLjI2NTcgOTUuNDgwNyAxMi4xMzYzIDk1LjMyODIgMTIuMDE4M0M5NS4xODE1IDExLjg5NjEgOTUuMDIxOCAxMS43ODgyIDk0Ljg2OCAxMS42NzMyQzk0Ljg0OTMgMTEuNjU4OCA5NC44MTkxIDExLjY1NDUgOTQuODA2MSAxMS42MzcyQzk0LjUzNzEgMTEuMjY5IDk0LjExNTcgMTEuMTE2NSA5My43NDE4IDEwLjg5NjVDOTMuMzUyIDEwLjY0NjIgOTIuOTMwNiAxMC40NzM2IDkyLjQ3NzUgMTAuMzc0NEM5Mi4yNzYyIDEwLjMyODQgOTIuMDgwNiAxMC4yNjM2IDkxLjg5MDcgMTAuMTgwMkM5MS4wODgxIDkuODY5NTQgOTAuMjUxMSA5Ljc5OTA3IDg5LjM5NjcgOS44MTA1N0M4OS4yMzg1IDkuODEwNTcgODkuMDgwMyA5LjgyMDY0IDg4LjkyMzUgOS44MTA1N0M4OC4yMjc0IDkuNzgwMzcgODcuNTgwMiA5Ljk2MDE1IDg2Ljk1NDUgMTAuMjQ2NEM4Ni4yODE0IDEwLjU1MTMgODUuNTgyNCAxMC44MDczIDg0Ljk4NTUgMTEuMjYwNEM4NC42ODc4IDExLjQ2NzUgODQuNDEwMiAxMS43MDE5IDg0LjE1NTYgMTEuOTYwOEM4My42NTA4IDEyLjUxMDIgODMuMjE3OCAxMy4xMSA4Mi44NTU0IDEzLjc2MTVDODIuNzEzIDE0LjAyMzMgODIuNjQyNSAxNC4zMjI1IDgyLjUzOSAxNC42MDI5QzgyLjUyMzEgMTQuNjQ5IDgyLjUyNDYgMTQuNzEyMyA4Mi40OTQ0IDE0LjczODFDODIuMDc3MyAxNS4xMTY0IDgyLjIyNCAxNS42NzczIDgyLjA0MTMgMTYuMTQwNUM4MS45NDA2IDE2LjM4OTMgODIuMDIxMiAxNi43MDg2IDgyLjAwOTcgMTYuOTk2MkM4Mi4wMTQgMTcuMjk2OSA4MS45OTUzIDE3LjU5NiA4MS45NTM2IDE3Ljg5MzdDODEuODU3MiAxOC4zOTI4IDgxLjkwNDcgMTguODkzMyA4MS45MTE5IDE5LjM5MUM4MS45MjkxIDE5LjcyNzYgODEuOTY1MSAyMC4wNjEyIDgyLjAyMTIgMjAuMzkzNUM4Mi4wMjY5IDIwLjQ5MTMgODIuMDQ5OSAyMC41ODQ4IDgyLjA5MTcgMjAuNjczOUM4Mi4yNjU3IDIwLjk4ODkgODIuNDI1MyAyMS4zMDM5IDgyLjQxOTYgMjEuNjc3OUM4Mi40MjI1IDIxLjc0NCA4Mi40NDk4IDIxLjc5NzIgODIuNDk4NyAyMS44MzlDODIuNzY0OCAyMi4wMzc0IDgyLjc4NzggMjIuMzU1MyA4Mi45MDI5IDIyLjYzQzgyLjk2OSAyMi43Nzk2IDgzLjA0MzggMjIuOTI0OSA4My4xMjcyIDIzLjA2NThDODMuMzM4NyAyMy40MjU0IDgzLjYzNzggMjMuNzI0NiA4My43ODQ1IDI0LjEzMDFDODMuODY3OSAyNC4zNTg4IDg0LjA2NSAyNC41NDQ0IDg0LjIyMTggMjQuNzQ1N0M4NC4zNTEyIDI0LjkxODMgODQuNTAwOCAyNS4wNzggODQuNjIzIDI1LjI1NzhDODQuNzY5NyAyNS40NzQ5IDg0LjkzMzcgMjUuNjQ5IDg1LjIwMjcgMjUuNzA3OUM4NS4yOTkgMjUuNzMxIDg1LjM4MzkgMjUuNzc0MSA4NS40NjAxIDI1LjgzNzRDODUuNzg4MSAyNi4xMjc5IDg2LjE5NjUgMjYuMjMxNSA4Ni42MTY1IDI2LjMyMDdDODcuMTYzMSAyNi40MzU3IDg3LjY5MjMgMjYuNjE2OSA4OC4yNDAzIDI2LjcwMzJDODguODk3NiAyNi44MjQxIDg5LjU1OTIgMjYuODg3MyA5MC4yMjY2IDI2Ljg5MzFDOTAuOTkzMiAyNi44NzMgOTEuNzA2NiAyNi42Njg3IDkyLjM2NjggMjYuMjc4OUM5My4yMTU0IDI1Ljc5NDIgOTMuOTYzMyAyNS4xODczIDk0LjYxMTkgMjQuNDU4MUM5NC44NTkzIDI0LjE1ODkgOTUuMDYyMSAyMy44MzI0IDk1LjIyMDMgMjMuNDc4NkM5NS40OTIyIDIyLjkyNjMgOTUuNjk3OCAyMi4zNDk2IDk1Ljg0MDIgMjEuNzUxMkM5NS45MzA4IDIxLjM1NDMgOTYuMDY3NSAyMC45Njc0IDk2LjE3NjggMjAuNTc0N0M5Ni4yOTQ3IDIwLjE2MzQgOTYuMzMwNyAxOS43NDQ4IDk2LjI4NjEgMTkuMzIwNUM5Ni4yNDU4IDE4Ljk2MjQgOTYuMjMyOSAxOC41OTk5IDk2LjIxNTYgMTguMjM4OUM5Ni4yMTQyIDE3Ljg5MzcgOTYuMTE5MyAxNy41NzU5IDk1LjkzMDggMTcuMjg1M0M5NS42ODA2IDE2LjkwODUgOTUuNTA5NCAxNi40Nzk5IDk1LjI4MzYgMTYuMDg4N0M5NS4xNzcyIDE1LjkzMDUgOTUuMDU3OCAxNS43ODIzIDk0LjkyNjkgMTUuNjQ0M0M5NC44NDkzIDE1LjU1MjIgOTQuNzcxNiAxNS40NjE2IDk0LjY5MzkgMTUuMzcxQzk0LjI3NjggMTQuODczMyA5My44Njk4IDE0LjM2OTkgOTMuMzE4OSAxNC4wMDE3QzkyLjkyNzcgMTMuNzQgOTIuNDc0NiAxMy42MzkzIDkyLjA2MDQgMTMuNDQ4QzkyLjAxNTggMTMuNDI3OSA5MS45NDk3IDEzLjQzMzYgOTEuOTIyMyAxMy40MDM0QzkxLjYyMTcgMTMuMTExNCA5MS4xODc0IDEzLjExMTQgOTAuODQyMiAxMi45MTU4QzkwLjgxMiAxMi44OTU3IDkwLjc3NzUgMTIuODgyOCA5MC43NDE1IDEyLjg3N0M5MC4zNTc1IDEyLjg0NTQgODkuOTcyIDEyLjgxMzcgODkuNTg2NiAxMi43ODQ5Qzg5LjI4MTcgMTIuNzQ3NiA4OC45ODU0IDEyLjc4MzUgODguNjk3NyAxMi44OTQzQzg4LjM2OTggMTMuMDM4MSA4OC4wNTYyIDEzLjIyMDcgODcuNzM4NCAxMy4zODQ3Qzg3LjY3NTEgMTMuNDE5MiA4Ny42MjMzIDEzLjQ3NTMgODcuNTYxNSAxMy41MDk4Qzg3LjAzNjUgMTMuODI3NyA4Ni42MDUgMTQuMjQxOSA4Ni4yNjcgMTQuNzUyNUM4NS45NTM1IDE1LjE5NTUgODUuNjczIDE1LjY2MTUgODUuMzc4MSAxNi4xMTc1Qzg1LjM2MzggMTYuMTM2MiA4NS4zNTA4IDE2LjE1NzcgODUuMzQwNyAxNi4xNzkzQzg1LjE0MDggMTYuNzk2MyA4NC45NDgxIDE3LjQxOTEgODQuNzI1MiAxOC4wMjc1Qzg0LjU2OTggMTguNDQ2IDg0LjU1NTQgMTguODgwNCA4NC41NDExIDE5LjMxMDVDODQuNTMzOSAxOS42OTU5IDg0LjU2MTIgMjAuMDc4NSA4NC42MjQ1IDIwLjQ1OTZDODQuNzU5NyAyMS4yODIzIDg1LjA2ODkgMjIuMDM0NiA4NS41NTM2IDIyLjcxNDlDODUuNzAzMiAyMi45MTkxIDg1Ljg3NzIgMjMuMTAwMyA4Ni4wNzQzIDIzLjI2Qzg2LjY3MTIgMjMuNzcyIDg3LjM1MjkgMjQuMTIzIDg4LjExNjYgMjQuMzE0MkM4OC4yOTc5IDI0LjM0ODggODguNDgwNSAyNC4zNjMyIDg4LjY2MzIgMjQuMzU3NEM4OS4yNjU4IDI0LjM4OSA4OS44MzgzIDI0LjI3NCA5MC4zODA1IDI0LjAxMDhDOTAuNzUzIDIzLjgxNjYgOTEuMTU1NyAyMy42Njg1IDkxLjQ5OCAyMy40MjRDOTEuNjM5IDIzLjMyMTggOTEuNzI1MyAyMy4xNDY0IDkxLjg0OSAyMy4wMTY5QzkyLjEwNSAyMi43NDY1IDkyLjM3NTQgMjIuNDkwNSA5Mi42MjU3IDIyLjIxNThDOTIuNzI2MyAyMi4wOTc4IDkyLjgxMjYgMjEuOTcxMyA5Mi44ODYgMjEuODM0NkM5My4wMTU0IDIxLjYzMTggOTMuMTM0OCAyMS40MjE5IDkzLjI0MTMgMjEuMjA2MUM5My4zODUxIDIwLjg4OTcgOTMuNTE3NCAyMC41Njc1IDkzLjYzMSAyMC4yMzk2QzkzLjgxNTEgMTkuNjcgOTMuODYxMiAxOS4wODkgOTMuNzcyIDE4LjQ5NzhDOTMuNjc4NSAxNy43MjExIDkzLjQzODMgMTcuMDE5MyA5Mi44OTc1IDE2LjQwNjZDOTIuNTg2OCAxNi4wNTU2IDkyLjI3NDcgMTUuNzg2NyA5MS44MjMxIDE1LjY2ODdDOTEuNjgwNyAxNS42Mjg0IDkxLjU0ODQgMTUuNTY5NSA5MS40MjMzIDE1LjQ5MzJDOTAuOTc0NSAxNS4yMzU4IDkwLjUwODUgMTUuMjY4OSA5MC4wMTA5IDE1LjMxNjNDODkuMzM2MyAxNS4zODI1IDg4Ljg1MTYgMTUuNzUyMSA4OC4zODk5IDE2LjE3MDdDODcuODQzNCAxNi42NzU1IDg3LjUzMjcgMTcuMzI1NiA4Ny4zNSAxOC4wMzc2Qzg3LjMxNDEgMTguMTkyOSA4Ny4yOTI1IDE4LjM0OTcgODcuMjg1MyAxOC41MDkzQzg3LjI1MjIgMTkuMDIxNCA4Ny4xNzAyIDE5LjUzNzcgODcuMjAzMyAyMC4wNDY5Qzg3LjI1MDggMjAuNzk5MSA4Ny41Mzg0IDIxLjQ2MjEgODguMjY0OCAyMS44Mjc1Qzg4Ljg0NDQgMjIuMTIyMyA4OS40NDcxIDIyLjM4NDEgOTAuMTEwMSAyMi4xODg1QzkwLjYyNzkgMjIuMDM2IDkxLjE1NDMgMjEuODkzNiA5MS41ODg3IDIxLjUzNTVDOTIuMDk2NCAyMS4xMTEyIDkyLjM2ODIgMjAuMjM2NyA5MS45OTcxIDE5LjQ0NTdDOTEuOTQyNSAxOS4zMjkyIDkxLjkxOCAxOS4xOTY4IDkxLjg3MDYgMTkuMDc2QzkxLjczNTQgMTguNzI3OSA5MS42NTE5IDE4LjM0MzkgOTEuNDQ3NyAxOC4wNDE5QzkxLjM2NzIgMTcuOTIyNSA5MS4yNjk0IDE3LjgxODkgOTEuMTU3MiAxNy43MzEyQzkxLjA0MzYgMTcuNjQyIDkwLjkxOTkgMTcuNTczIDkwLjc4NDcgMTcuNTI0MUM5MC42NDk1IDE3LjQ3MzggOTAuNTA5OSAxNy40NDUgOTAuMzY2MSAxNy40MzkyQzkwLjIyMjMgMTcuNDMzNSA5MC4wODEzIDE3LjQ0NzkgODkuOTQxOCAxNy40ODY3Qzg5Ljg3MTMgMTcuNTA0IDg5LjgwMzcgMTcuNTMxMyA4OS43MzMzIDE3LjU1Qzg5LjI3MyAxNy42Nzk0IDg5LjExNzcgMTcuODc2NSA4OS4wODc1IDE4LjM2NTVDODkuMDU3MyAxOC42MTU4IDg5LjA0NzIgMTguODY3NSA4OS4wNTU4IDE5LjExOTJDODkuMDY4OCAxOS4zMjc3IDg5LjEzMjEgMTkuNTE3NiA4OS4yNDg2IDE5LjY5MDJDODkuNDA5NyAxOS44NzE0IDg5LjU5ODEgMjAuMDIxIDg5LjgxMDkgMjAuMTM3NUM4OS44OCAyMC4xODY0IDg5Ljk1NjIgMjAuMjA1MSA5MC4wNDExIDIwLjE5NUM5MC4xMjQ1IDIwLjE4MzUgOTAuMTkzNSAyMC4xNDc1IDkwLjI0ODIgMjAuMDgyOEM5MC4yODI3IDIwLjA0ODMgOTAuMzI1OCAyMC4wMjM4IDkwLjM1NzUgMTkuOTkyMkM5MC43Mzg2IDE5LjY2MjggOTAuNzQ1OCAxOS4yNDg2IDkwLjM2NDcgMTguOTEyWiIgZmlsbD0iIzE4MTcxMyIvPgo8L2c+CjwvZz4KPC9nPgo8ZyBpZD0iR3JvdXBfMiI+CjxnIGlkPSJDbGlwIHBhdGggZ3JvdXBfMiI+CjxtYXNrIGlkPSJtYXNrMV8zNTRfNDMxIiBzdHlsZT0ibWFzay10eXBlOmx1bWluYW5jZSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjQyIj4KPGcgaWQ9Ijk5MjJjMTgyZGMiPgo8cGF0aCBpZD0iVmVjdG9yXzMiIGQ9Ik03OS4xNjMzIDBIMFY0MS42MDY3SDc5LjE2MzNWMFoiIGZpbGw9IndoaXRlIi8+CjwvZz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2sxXzM1NF80MzEpIj4KPGcgaWQ9Ikdyb3VwXzMiPgo8ZyBpZD0iR3JvdXBfNCI+CjxnIGlkPSJHcm91cF81Ij4KPGcgaWQ9Ikdyb3VwXzYiPgo8cGF0aCBpZD0iVmVjdG9yXzQiIGQ9Ik0xLjUxNDgyIDYuMjUyOTRWMzEuNzA0OUgxMC4wNjRWMjcuODYxOEg1LjI1NDM2VjIwLjg2NTlIOC43MTc3NVYxNi43ODEySDUuMjU0MzZWMTAuMDk2SDEwLjA2NFY2LjI1Mjk0SDEuNTE0ODJaIiBmaWxsPSIjMTgxNzEzIi8+CjwvZz4KPC9nPgo8L2c+CjxnIGlkPSJHcm91cF83Ij4KPGcgaWQ9Ikdyb3VwXzgiPgo8ZyBpZD0iR3JvdXBfOSI+CjxwYXRoIGlkPSJWZWN0b3JfNSIgZD0iTTEyLjE0NjEgMzEuNzA0OUgxNS4wODZDMTYuODE5MSAzMS43MDQ5IDE4LjE4MTIgMzEuNTA5MiAxOS4xNzA3IDMxLjExOEMyMC4xNjMxIDMwLjcyMzkgMjAuOTE1MyAzMC4wNDIyIDIxLjQyNTkgMjkuMDc1N0MyMS45MDkyIDI4LjEwNjMgMjIuMjE0MSAyNi44MDc1IDIyLjM0MDcgMjUuMTgwOEMyMi40NjcyIDIzLjU1MTIgMjIuNTMwNSAyMS40OTAxIDIyLjUzMDUgMTguOTk2MkMyMi41MzA1IDE2LjUwMzYgMjIuNDY3MiAxNC40MzgyIDIyLjM0MDcgMTIuOEMyMi4yMTQxIDExLjE1ODkgMjEuOTA5MiA5Ljg1Mjk3IDIxLjQyNTkgOC44ODIxM0MyMC45MTUzIDcuOTE1NiAyMC4xNjMxIDcuMjM2NzMgMTkuMTcwNyA2Ljg0NTUyQzE4LjE4MTIgNi40NTE0MyAxNi44MTkxIDYuMjUyOTQgMTUuMDg2IDYuMjUyOTRIMTIuMTQ2MVYzMS43MDQ5Wk0xNS44ODU2IDI3Ljk2NTNWOS45OTI0OUMxNi41MyA5Ljk5MjQ5IDE3LjA0MiAxMC4wNjczIDE3LjQyMTcgMTAuMjE2OUMxNy44MDQzIDEwLjM2NjQgMTguMDg5MSAxMC43NDMzIDE4LjI3MzIgMTEuMzQ0NUMxOC4zNjUzIDExLjY0MzYgMTguNDQgMTIuMDIwNSAxOC40OTc2IDEyLjQ3MjFDMTguNTU1MSAxMi45MjA4IDE4LjU5NTQgMTMuNDQ0NCAxOC42MTg0IDE0LjA0MjdDMTguNjQxNCAxNC42NDUzIDE4LjY1MjkgMTUuMzU3MyAxOC42NTI5IDE2LjE3NzFDMTguNjUyOSAxNi45OTQxIDE4LjY1MjkgMTcuOTIzMiAxOC42NTI5IDE4Ljk2MTZDMTguNjUyOSAyMC4wMDE1IDE4LjY1MjkgMjAuOTMyMSAxOC42NTI5IDIxLjc1MTlDMTguNjUyOSAyMi41Njg5IDE4LjY0MTQgMjMuMjc5NCAxOC42MTg0IDIzLjg4MDZDMTguNTk1NCAyNC40Nzg5IDE4LjU1NTEgMjUuMDA1MyAxOC40OTc2IDI1LjQ1NjlDMTguNDQgMjUuOTA1NyAxOC4zNjUzIDI2LjI3OTYgMTguMjczMiAyNi41Nzg4QzE4LjA4OTEgMjcuMjA0NSAxNy44MDQzIDI3LjU5MTQgMTcuNDIxNyAyNy43NDA5QzE3LjA0MiAyNy44OTA1IDE2LjUzIDI3Ljk2NTMgMTUuODg1NiAyNy45NjUzWiIgZmlsbD0iIzE4MTcxMyIvPgo8L2c+CjwvZz4KPC9nPgo8ZyBpZD0iR3JvdXBfMTAiPgo8ZyBpZD0iR3JvdXBfMTEiPgo8ZyBpZD0iR3JvdXBfMTIiPgo8cGF0aCBpZD0iVmVjdG9yXzYiIGQ9Ik0yNS4wMjg0IDYuMjUyOTRWMzEuNzA0OUgyOC43NjhWNi4yNTI5NEgyNS4wMjg0WiIgZmlsbD0iIzE4MTcxMyIvPgo8L2c+CjwvZz4KPC9nPgo8ZyBpZD0iR3JvdXBfMTMiPgo8ZyBpZD0iR3JvdXBfMTQiPgo8ZyBpZD0iR3JvdXBfMTUiPgo8cGF0aCBpZD0iVmVjdG9yXzciIGQ9Ik0zMC4yMjE0IDEwLjA5NkgzMy43NTM4VjMxLjcwNDlIMzcuNDkzNFYxMC4wOTZINDEuMDI1OFY2LjI1Mjk0SDMwLjIyMTRWMTAuMDk2WiIgZmlsbD0iIzE4MTcxMyIvPgo8L2c+CjwvZz4KPC9nPgo8ZyBpZD0iR3JvdXBfMTYiPgo8ZyBpZD0iR3JvdXBfMTciPgo8ZyBpZD0iR3JvdXBfMTgiPgo8cGF0aCBpZD0iVmVjdG9yXzgiIGQ9Ik01Mi4yMTA1IDI2LjQ3NTdWMTEuNDgzQzUyLjE2NDQgMTAuNDQ0NiA1MS45NTczIDkuNTMxMjQgNTEuNTg5MSA4Ljc0NDVDNTEuNDI4IDguMzk5MzEgNTEuMjIzOCA4LjA1OTg3IDUwLjk3OTMgNy43MjYxOUM1MC43Mzc3IDcuMzkyNTEgNTAuNDQ0MiA3LjA5NzY2IDUwLjA5OTEgNi44NDAyMUM0OS43NTM5IDYuNTg3MDcgNDkuMzQyNSA2LjM3OTk1IDQ4Ljg2NzkgNi4yMTg4N0M0OC4zOTYxIDYuMDU3NzggNDcuODQ2NyA1Ljk3NzIzIDQ3LjIyMjUgNS45NzcyM0M0Ni42MDExIDUuOTc3MjMgNDYuMDQ2IDYuMDU3NzggNDUuNTU5OCA2LjIxODg3QzQ1LjA3NjYgNi4zNzk5NSA0NC42NjIzIDYuNTg3MDcgNDQuMzE3MSA2Ljg0MDIxQzQzLjk2NzYgNy4wOTc2NiA0My42Nzg2IDcuMzkyNTEgNDMuNDQ4NCA3LjcyNjE5QzQzLjIxODMgOC4wNTk4NyA0My4wMjI3IDguMzk5MzEgNDIuODYxNiA4Ljc0NDVDNDIuNDkzNCA5LjUzMTI0IDQyLjI4NjMgMTAuNDQ0NiA0Mi4yNDAzIDExLjQ4M1YyNi40NzU3QzQyLjI4NjMgMjcuNTM4NiA0Mi40OTM0IDI4LjQ2MzQgNDIuODYxNiAyOS4yNDg3QzQzLjAyMjcgMjkuNTkzOSA0My4yMTgzIDI5LjkyNzYgNDMuNDQ4NCAzMC4yNDk3QzQzLjY3ODYgMzAuNTcxOSA0My45Njc2IDMwLjg2MjUgNDQuMzE3MSAzMS4xMTg1QzQ1LjAzMDUgMzEuNjkzOCA0NS45OTg1IDMxLjk4MTQgNDcuMjIyNSAzMS45ODE0QzQ4LjQyMiAzMS45ODE0IDQ5LjM4MTQgMzEuNjkzOCA1MC4wOTkxIDMxLjExODVDNTAuNDQ0MiAzMC44NjI1IDUwLjczNzcgMzAuNTcxOSA1MC45NzkzIDMwLjI0OTdDNTEuMjIzOCAyOS45Mjc2IDUxLjQyOCAyOS41OTM5IDUxLjU4OTEgMjkuMjQ4N0M1MS45NTczIDI4LjQ2MzQgNTIuMTY0NCAyNy41Mzg2IDUyLjIxMDUgMjYuNDc1N1pNNDguNDcwOSAxMS40ODNWMjYuNDc1N0M0OC40NzA5IDI2Ljg4OTkgNDguNDI0OSAyNy4yMDM1IDQ4LjMzMjggMjcuNDEzNEM0OC4yNjM4IDI3LjY2NjYgNDguMTQzIDI3Ljg4NTIgNDcuOTcwNCAyOC4wNjkzQzQ3Ljc5NzggMjguMjUzNCA0Ny41NDc1IDI4LjM0NTUgNDcuMjIyNSAyOC4zNDU1QzQ2LjkyMzMgMjguMzQ1NSA0Ni42ODE3IDI4LjI1MzQgNDYuNDk3NiAyOC4wNjkzQzQ2LjE1MjQgMjcuNjc4MSA0NS45Nzk4IDI3LjE0NzQgNDUuOTc5OCAyNi40NzU3VjExLjQ4M0M0NS45Nzk4IDExLjExNDggNDYuMDI1OCAxMC44MDI3IDQ2LjExNzkgMTAuNTQ1MkM0Ni4xODY5IDEwLjMxNTEgNDYuMzA3NyAxMC4xMDIyIDQ2LjQ4MDMgOS45MDY2M0M0Ni42NTI5IDkuNzExMDIgNDYuOTAwMyA5LjYxMzIyIDQ3LjIyMjUgOS42MTMyMkM0Ny41NDc1IDkuNjEzMjIgNDcuODAzNiA5LjcwNTI3IDQ3Ljk4NzcgOS44ODkzN0M0OC4zMDk4IDEwLjI4MDYgNDguNDcwOSAxMC44MTI4IDQ4LjQ3MDkgMTEuNDgzWiIgZmlsbD0iIzE4MTcxMyIvPgo8L2c+CjwvZz4KPC9nPgo8ZyBpZD0iR3JvdXBfMTkiPgo8ZyBpZD0iR3JvdXBfMjAiPgo8ZyBpZD0iR3JvdXBfMjEiPgo8cGF0aCBpZD0iVmVjdG9yXzkiIGQ9Ik02MS40MjA0IDMxLjcwNDlINjUuMTZMNjIuNzcyNCAxOS4zNzU5QzYzLjQ4ODcgMTguODkyNiA2NC4wMTUxIDE4LjEyNiA2NC4zNDg4IDE3LjA3NDZDNjQuNjgyNSAxNi4wMjQ3IDY0Ljg0OTMgMTQuODY0IDY0Ljg0OTMgMTMuNTk0QzY0Ljg0OTMgMTEuMTkzNSA2NC4zNDU5IDkuMzY5NzEgNjMuMzQyIDguMTIyNzJDNjIuMzQwOSA2Ljg3NzE2IDYwLjcyIDYuMjUyOTQgNTguNDgwNiA2LjI1Mjk0SDU0Ljc0MVYzMS43MDQ5SDU4LjQ4MDZWMjAuOTY5NUg1OS40ODE2TDYxLjQyMDQgMzEuNzA0OVpNNTguNDgwNiAxNy41MDYxVjkuOTU3OTdDNTguNzMzNyA5Ljk1Nzk3IDU5LjAyMTQgOS45ODA5OCA1OS4zNDM2IDEwLjAyN0M1OS42Njg2IDEwLjA3MyA1OS45NzA3IDEwLjIyMjYgNjAuMjQ2OCAxMC40NzU4QzYwLjUyMyAxMC43MTAyIDYwLjc1ODggMTEuMDg1NiA2MC45NTQ0IDExLjYwMzRDNjEuMTUgMTIuMTIxMiA2MS4yNDc4IDEyLjgzMTcgNjEuMjQ3OCAxMy43MzJDNjEuMjQ3OCAxNC42MzM4IDYxLjE1IDE1LjMzNDMgNjAuOTU0NCAxNS44MzE5QzYwLjc1ODggMTYuMzI2NyA2MC41MjMgMTYuNzAwNyA2MC4yNDY4IDE2Ljk1MzhDNTkuOTcwNyAxNy4xODM5IDU5LjY2ODYgMTcuMzMzNSA1OS4zNDM2IDE3LjQwMjVDNTkuMDIxNCAxNy40NzE2IDU4LjczMzcgMTcuNTA2MSA1OC40ODA2IDE3LjUwNjFaIiBmaWxsPSIjMTgxNzEzIi8+CjwvZz4KPC9nPgo8L2c+CjxnIGlkPSJHcm91cF8yMiI+CjxnIGlkPSJHcm91cF8yMyI+CjxnIGlkPSJHcm91cF8yNCI+CjxwYXRoIGlkPSJWZWN0b3JfMTAiIGQ9Ik02Ni4yMDExIDMxLjcwNDlINjkuODM3MUw3MC41MzMzIDI2LjUwOThINzQuMTM0N0w3NC44MjUxIDMxLjcwNDlINzguNDYxMUw3NC42MTggNi4yNTI5NEg3MC4wNDQyTDY2LjIwMTEgMzEuNzA0OVpNNzIuNTQxMSAxNC41MzE3TDczLjYxMTIgMjIuNTYzMUg3MS4wNTFMNzIuMTIxMSAxNC41MzE3TDcyLjIyNDcgMTMuODcwMUg3Mi40Mzc1TDcyLjU0MTEgMTQuNTMxN1oiIGZpbGw9IiMxODE3MTMiLz4KPC9nPgo8L2c+CjwvZz4KPC9nPgo8L2c+CjwvZz4KPC9nPgo8ZyBpZD0iR3JvdXBfMjUiPgo8ZyBpZD0iQ2xpcCBwYXRoIGdyb3VwXzMiPgo8bWFzayBpZD0ibWFzazJfMzU0XzQzMSIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjEwMSIgeT0iMCIgd2lkdGg9Ijc1IiBoZWlnaHQ9IjQyIj4KPGcgaWQ9ImE5ZTFjY2M4YTAiPgo8cGF0aCBpZD0iVmVjdG9yXzExIiBkPSJNMTc2IDBIMTAxLjI1NVY0MS42MDY3SDE3NlYwWiIgZmlsbD0id2hpdGUiLz4KPC9nPgo8L21hc2s+CjxnIG1hc2s9InVybCgjbWFzazJfMzU0XzQzMSkiPgo8ZyBpZD0iR3JvdXBfMjYiPgo8ZyBpZD0iR3JvdXBfMjciPgo8ZyBpZD0iR3JvdXBfMjgiPgo8ZyBpZD0iR3JvdXBfMjkiPgo8cGF0aCBpZD0iVmVjdG9yXzEyIiBkPSJNMTA5LjI0OSAxMy4wNzY0TDExMi45MiAxMi43MzEyQzExMi45MiAxMi4wMTQ5IDExMi44NTcgMTEuMjU4NCAxMTIuNzMgMTAuNDY0NUMxMTIuNjA0IDkuNjY3NjQgMTEyLjM1NiA4LjkyMTE3IDExMS45ODggOC4yMjY0OEMxMTEuNjE1IDcuNTU5MTEgMTExLjA4OCA3LjAxMjU2IDExMC40MDYgNi41ODY4M0MxMDkuNzI3IDYuMTU4MjIgMTA4LjgyMSA1Ljk1Mzk5IDEwNy42OSA1Ljk3N0MxMDYuODE2IDYuMDAwMDEgMTA2LjA2NSA2LjE4OTg2IDEwNS40NDEgNi41NDY1NkMxMDQuODIgNi45MDMyNSAxMDQuMzEgNy4zNjA2MyAxMDMuOTE2IDcuOTE1ODFDMTAzLjUyNSA4LjQ5MTEyIDEwMy4yNDMgOS4xMzI2IDEwMy4wNzEgOS44MzczNkMxMDIuODk4IDEwLjU0MzYgMTAyLjgxMiAxMS4yNDExIDEwMi44MTIgMTEuOTMxNUMxMDIuODEyIDEyLjYyNjIgMTAyLjkxNSAxMy4zMDY1IDEwMy4xMjIgMTMuOTczOUMxMDMuNDkxIDE1LjI4OTkgMTA0LjEwMiAxNi42MDU5IDEwNC45NTggMTcuOTIwNUMxMDUuMzcyIDE4LjU2OTIgMTA1Ljc3NSAxOS4xODMzIDEwNi4xNjYgMTkuNzYxNUMxMDYuNTYgMjAuMzM2OCAxMDYuOTQyIDIwLjg4OTEgMTA3LjMxMSAyMS40MTg0QzEwNy40OTUgMjEuNjc1OSAxMDcuNjYyIDIxLjkzMDUgMTA3LjgxMSAyMi4xODM2QzEwNy45NjEgMjIuNDM2NyAxMDguMTE4IDIyLjY4OTkgMTA4LjI4MyAyMi45NDNDMTA4LjU1OSAyMy40NTM2IDEwOC43ODkgMjMuOTQ0MSAxMDguOTczIDI0LjQxNThDMTA5LjE1NyAyNC44ODc2IDEwOS4yNDkgMjUuMzMzNSAxMDkuMjQ5IDI1Ljc1MDZDMTA5LjI0OSAyNi41NTYgMTA5LjEzNCAyNy4yMjYyIDEwOC45MDQgMjcuNzU4NEMxMDguNjc0IDI4LjI4NzcgMTA4LjI4IDI4LjU1MjMgMTA3LjcyNSAyOC41NTIzQzEwNy4zMzQgMjguNTUyMyAxMDcuMDIzIDI4LjQyNTggMTA2Ljc5MyAyOC4xNzI2QzEwNi41NjMgMjcuOTE5NSAxMDYuMzkgMjcuNTg1OCAxMDYuMjc1IDI3LjE3MTZDMTA2LjEzMyAyNi43Nzc1IDEwNi4wNDUgMjYuMzIwMSAxMDYuMDEgMjUuODAyM0MxMDUuOTc2IDI1LjI4MTcgMTA1Ljk1OSAyNC43NTUzIDEwNS45NTkgMjQuMjI2TDEwMi4yODggMjQuNTcxMkMxMDIuMjg4IDI1LjUxOSAxMDIuMzUxIDI2LjQzODEgMTAyLjQ3OCAyNy4zMjY5QzEwMi42MDcgMjguMjEyOSAxMDIuODU4IDI5LjAwNCAxMDMuMjI2IDI5LjY5NzJDMTAzLjYxNyAzMC4zODc2IDEwNC4xNjQgMzAuOTQyOCAxMDQuODY2IDMxLjM1OTlDMTA1LjU3IDMxLjc3MjcgMTA2LjUyNCAzMS45ODEyIDEwNy43MjUgMzEuOTgxMkMxMDguNzQgMzEuOTgxMiAxMDkuNTgzIDMxLjgwMTQgMTEwLjI1MSAzMS40NDYyQzExMC45MjEgMzEuMDg5NSAxMTEuNDU0IDMwLjYyMiAxMTEuODUgMzAuMDQyNEMxMTIuMjQxIDI5LjQ0NDEgMTEyLjUxNyAyOC43NjM4IDExMi42NzggMjhDMTEyLjgzOSAyNy4yMzc3IDExMi45MiAyNi40Mjk0IDExMi45MiAyNS41NzhDMTEyLjkyIDI0Ljg4NDcgMTEyLjgxNiAyNC4yMDg3IDExMi42MDkgMjMuNTUyOUMxMTIuNDAyIDIyLjg5NDEgMTEyLjEzOCAyMi4yMzk3IDExMS44MTUgMjEuNTkxQzExMS40ODkgMjAuOTQ2NyAxMTEuMTE5IDIwLjMwMjMgMTEwLjcwNSAxOS42NThDMTEwLjI5MSAxOS4wMTA3IDEwOS44NjIgMTguMzYyMSAxMDkuNDIyIDE3LjcxMzRDMTA5LjA1NCAxNy4xODQxIDEwOC42OTQgMTYuNjY2MyAxMDguMzQ2IDE2LjE2MDFDMTA4LjAwMSAxNS42NTA5IDEwNy42OSAxNS4xNTMzIDEwNy40MTQgMTQuNjdDMTA3LjEzOCAxNC4xODM5IDEwNi45MTQgMTMuNzE1IDEwNi43NDEgMTMuMjY2MkMxMDYuNTY4IDEyLjgxNzUgMTA2LjQ4MiAxMi4zNzMxIDEwNi40ODIgMTEuOTMxNUMxMDYuNDgyIDExLjE5NTEgMTA2LjU3NCAxMC41OTY4IDEwNi43NTggMTAuMTM2NUMxMDYuOTQyIDkuNjczMzkgMTA3LjI3NiA5LjQyODg4IDEwNy43NTkgOS40MDU4N0MxMDguMDYxIDkuNDA1ODcgMTA4LjMxMiA5LjUxNTE4IDEwOC41MDcgOS43MzM4QzEwOC43MDMgOS45NTI0MiAxMDguODU4IDEwLjIzNDMgMTA4Ljk3MyAxMC41Nzk1QzEwOS4wODggMTAuOTUyIDEwOS4xNjMgMTEuMzU2MiAxMDkuMTk4IDExLjc5MzRDMTA5LjIzMiAxMi4yMzA3IDEwOS4yNDkgMTIuNjU5MyAxMDkuMjQ5IDEzLjA3NjRaIiBmaWxsPSIjMTgxNzEzIi8+CjwvZz4KPC9nPgo8L2c+CjxnIGlkPSJHcm91cF8zMCI+CjxnIGlkPSJHcm91cF8zMSI+CjxnIGlkPSJHcm91cF8zMiI+CjxwYXRoIGlkPSJWZWN0b3JfMTMiIGQ9Ik0xMjQuNjYgMjYuNDc1N1YxMS40ODNDMTI0LjYxNCAxMC40NDQ1IDEyNC40MDcgOS41MzEyMiAxMjQuMDM5IDguNzQ0NDhDMTIzLjg3NyA4LjM5OTI5IDEyMy42NzMgOC4wNTk4NiAxMjMuNDI5IDcuNzI2MTdDMTIzLjE4NyA3LjM5MjQ5IDEyMi44OTQgNy4wOTc2NCAxMjIuNTQ4IDYuODQwMTlDMTIyLjIwMyA2LjU4NzA1IDEyMS43OTIgNi4zNzk5NCAxMjEuMzE3IDYuMjE4ODVDMTIwLjg0NiA2LjA1Nzc2IDEyMC4yOTYgNS45NzcyMiAxMTkuNjcyIDUuOTc3MjJDMTE5LjA1MSA1Ljk3NzIyIDExOC40OTUgNi4wNTc3NiAxMTguMDA5IDYuMjE4ODVDMTE3LjUyNiA2LjM3OTk0IDExNy4xMTIgNi41ODcwNSAxMTYuNzY3IDYuODQwMTlDMTE2LjQxNyA3LjA5NzY0IDExNi4xMjggNy4zOTI0OSAxMTUuODk4IDcuNzI2MTdDMTE1LjY2OCA4LjA1OTg2IDExNS40NzIgOC4zOTkyOSAxMTUuMzExIDguNzQ0NDhDMTE0Ljk0MyA5LjUzMTIyIDExNC43MzYgMTAuNDQ0NSAxMTQuNjkgMTEuNDgzVjI2LjQ3NTdDMTE0LjczNiAyNy41Mzg2IDExNC45NDMgMjguNDYzNCAxMTUuMzExIDI5LjI0ODdDMTE1LjQ3MiAyOS41OTM5IDExNS42NjggMjkuOTI3NiAxMTUuODk4IDMwLjI0OTdDMTE2LjEyOCAzMC41NzE5IDExNi40MTcgMzAuODYyNCAxMTYuNzY3IDMxLjExODVDMTE3LjQ4IDMxLjY5MzggMTE4LjQ0OCAzMS45ODE0IDExOS42NzIgMzEuOTgxNEMxMjAuODcxIDMxLjk4MTQgMTIxLjgzMSAzMS42OTM4IDEyMi41NDggMzEuMTE4NUMxMjIuODk0IDMwLjg2MjQgMTIzLjE4NyAzMC41NzE5IDEyMy40MjkgMzAuMjQ5N0MxMjMuNjczIDI5LjkyNzYgMTIzLjg3NyAyOS41OTM5IDEyNC4wMzkgMjkuMjQ4N0MxMjQuNDA3IDI4LjQ2MzQgMTI0LjYxNCAyNy41Mzg2IDEyNC42NiAyNi40NzU3Wk0xMjAuOTIgMTEuNDgzVjI2LjQ3NTdDMTIwLjkyIDI2Ljg4OTkgMTIwLjg3NCAyNy4yMDM0IDEyMC43ODIgMjcuNDEzNEMxMjAuNzEzIDI3LjY2NjYgMTIwLjU5MiAyNy44ODUyIDEyMC40MiAyOC4wNjkzQzEyMC4yNDcgMjguMjUzNCAxMTkuOTk3IDI4LjM0NTQgMTE5LjY3MiAyOC4zNDU0QzExOS4zNzMgMjguMzQ1NCAxMTkuMTMxIDI4LjI1MzQgMTE4Ljk0NyAyOC4wNjkzQzExOC42MDIgMjcuNjc4MSAxMTguNDI5IDI3LjE0NzQgMTE4LjQyOSAyNi40NzU3VjExLjQ4M0MxMTguNDI5IDExLjExNDggMTE4LjQ3NSAxMC44MDI3IDExOC41NjcgMTAuNTQ1MkMxMTguNjM2IDEwLjMxNTEgMTE4Ljc1NyAxMC4xMDIyIDExOC45MyA5LjkwNjYyQzExOS4xMDIgOS43MTEwMSAxMTkuMzUgOS42MTMyMSAxMTkuNjcyIDkuNjEzMjFDMTE5Ljk5NyA5LjYxMzIxIDEyMC4yNTMgOS43MDUyNiAxMjAuNDM3IDkuODg5MzZDMTIwLjc1OSAxMC4yODA2IDEyMC45MiAxMC44MTI3IDEyMC45MiAxMS40ODNaIiBmaWxsPSIjMTgxNzEzIi8+CjwvZz4KPC9nPgo8L2c+CjxnIGlkPSJHcm91cF8zMyI+CjxnIGlkPSJHcm91cF8zNCI+CjxnIGlkPSJHcm91cF8zNSI+CjxwYXRoIGlkPSJWZWN0b3JfMTQiIGQ9Ik0xMjcuMTkgNi4yNTMyMlYzMS43MDUxSDEzNS44ODNWMjguMjQxN0gxMzAuOTNWNi4yNTMyMkgxMjcuMTlaIiBmaWxsPSIjMTgxNzEzIi8+CjwvZz4KPC9nPgo8L2c+CjxnIGlkPSJHcm91cF8zNiI+CjxnIGlkPSJHcm91cF8zNyI+CjxnIGlkPSJHcm91cF8zOCI+CjxwYXRoIGlkPSJWZWN0b3JfMTUiIGQ9Ik0xMzYuNzExIDMxLjcwNTFIMTQwLjM0N0wxNDEuMDQzIDI2LjUxSDE0NC42NDVMMTQ1LjMzNSAzMS43MDUxSDE0OC45NzFMMTQ1LjEyOCA2LjI1MzIySDE0MC41NTRMMTM2LjcxMSAzMS43MDUxWk0xNDMuMDUxIDE0LjUzMkwxNDQuMTIxIDIyLjU2MzRIMTQxLjU2MUwxNDIuNjMxIDE0LjUzMkwxNDIuNzM1IDEzLjg3MDRIMTQyLjk0OEwxNDMuMDUxIDE0LjUzMloiIGZpbGw9IiMxODE3MTMiLz4KPC9nPgo8L2c+CjwvZz4KPGcgaWQ9Ikdyb3VwXzM5Ij4KPGcgaWQ9Ikdyb3VwXzQwIj4KPGcgaWQ9Ikdyb3VwXzQxIj4KPHBhdGggaWQ9IlZlY3Rvcl8xNiIgZD0iTTE1NC42NTEgMTguNDQ0MUwxNTguMjg3IDMxLjcwNTFIMTYxLjYxMlY2LjI1MzIySDE1OC4xODNWMjAuNjkzNkgxNTcuOTc2TDE1Ny42NjUgMTkuNTE0MkwxNTQuMDMgNi4yNTMyMkgxNTAuNzA0VjMxLjcwNTFIMTU0LjEzM1YxNy4yNjQ3SDE1NC4zNEwxNTQuNjUxIDE4LjQ0NDFaIiBmaWxsPSIjMTgxNzEzIi8+CjwvZz4KPC9nPgo8L2c+CjxnIGlkPSJHcm91cF80MiI+CjxnIGlkPSJHcm91cF80MyI+CjxnIGlkPSJHcm91cF80NCI+CjxwYXRoIGlkPSJWZWN0b3JfMTciIGQ9Ik0xNzQuMTEyIDI2LjQ3NTdWMTEuNDgzQzE3NC4wNjYgMTAuNDQ0NSAxNzMuODU4IDkuNTMxMjIgMTczLjQ5IDguNzQ0NDhDMTczLjMyOSA4LjM5OTI5IDE3My4xMjUgOC4wNTk4NiAxNzIuODggNy43MjYxN0MxNzIuNjM5IDcuMzkyNDkgMTcyLjM0NSA3LjA5NzY0IDE3MiA2Ljg0MDE5QzE3MS42NTUgNi41ODcwNSAxNzEuMjQ0IDYuMzc5OTQgMTcwLjc2OSA2LjIxODg1QzE3MC4yOTcgNi4wNTc3NiAxNjkuNzQ4IDUuOTc3MjIgMTY5LjEyNCA1Ljk3NzIyQzE2OC41MDIgNS45NzcyMiAxNjcuOTQ3IDYuMDU3NzYgMTY3LjQ2MSA2LjIxODg1QzE2Ni45NzggNi4zNzk5NCAxNjYuNTYzIDYuNTg3MDUgMTY2LjIxOCA2Ljg0MDE5QzE2NS44NjkgNy4wOTc2NCAxNjUuNTggNy4zOTI0OSAxNjUuMzUgNy43MjYxN0MxNjUuMTE5IDguMDU5ODYgMTY0LjkyNCA4LjM5OTI5IDE2NC43NjMgOC43NDQ0OEMxNjQuMzk0IDkuNTMxMjIgMTY0LjE4NyAxMC40NDQ1IDE2NC4xNDEgMTEuNDgzVjI2LjQ3NTdDMTY0LjE4NyAyNy41Mzg2IDE2NC4zOTQgMjguNDYzNCAxNjQuNzYzIDI5LjI0ODdDMTY0LjkyNCAyOS41OTM5IDE2NS4xMTkgMjkuOTI3NiAxNjUuMzUgMzAuMjQ5N0MxNjUuNTggMzAuNTcxOSAxNjUuODY5IDMwLjg2MjQgMTY2LjIxOCAzMS4xMTg1QzE2Ni45MzIgMzEuNjkzOCAxNjcuOSAzMS45ODE0IDE2OS4xMjQgMzEuOTgxNEMxNzAuMzIzIDMxLjk4MTQgMTcxLjI4MiAzMS42OTM4IDE3MiAzMS4xMTg1QzE3Mi4zNDUgMzAuODYyNCAxNzIuNjM5IDMwLjU3MTkgMTcyLjg4IDMwLjI0OTdDMTczLjEyNSAyOS45Mjc2IDE3My4zMjkgMjkuNTkzOSAxNzMuNDkgMjkuMjQ4N0MxNzMuODU4IDI4LjQ2MzQgMTc0LjA2NiAyNy41Mzg2IDE3NC4xMTIgMjYuNDc1N1pNMTcwLjM3MiAxMS40ODNWMjYuNDc1N0MxNzAuMzcyIDI2Ljg4OTkgMTcwLjMyNiAyNy4yMDM0IDE3MC4yMzQgMjcuNDEzNEMxNzAuMTY1IDI3LjY2NjYgMTcwLjA0NCAyNy44ODUyIDE2OS44NzEgMjguMDY5M0MxNjkuNjk5IDI4LjI1MzQgMTY5LjQ0OSAyOC4zNDU0IDE2OS4xMjQgMjguMzQ1NEMxNjguODI0IDI4LjM0NTQgMTY4LjU4MyAyOC4yNTM0IDE2OC4zOTkgMjguMDY5M0MxNjguMDUzIDI3LjY3ODEgMTY3Ljg4MSAyNy4xNDc0IDE2Ny44ODEgMjYuNDc1N1YxMS40ODNDMTY3Ljg4MSAxMS4xMTQ4IDE2Ny45MjcgMTAuODAyNyAxNjguMDE5IDEwLjU0NTJDMTY4LjA4OCAxMC4zMTUxIDE2OC4yMDkgMTAuMTAyMiAxNjguMzgxIDkuOTA2NjJDMTY4LjU1NCA5LjcxMTAxIDE2OC44MDEgOS42MTMyMSAxNjkuMTI0IDkuNjEzMjFDMTY5LjQ0OSA5LjYxMzIxIDE2OS43MDUgOS43MDUyNiAxNjkuODg5IDkuODg5MzZDMTcwLjIxMSAxMC4yODA2IDE3MC4zNzIgMTAuODEyNyAxNzAuMzcyIDExLjQ4M1oiIGZpbGw9IiMxODE3MTMiLz4KPC9nPgo8L2c+CjwvZz4KPC9nPgo8L2c+CjwvZz4KPC9nPgo8L2c+CjwvZz4KPC9nPgo8L2c+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfMzU0XzQzMSI+CjxyZWN0IHdpZHRoPSIxNDQwIiBoZWlnaHQ9IjQ4MDYiIGZpbGw9IndoaXRlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjIgLTg4LjY5NjYpIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==">
+    </div>
+
+    <h1>Design System — Editora&nbsp;Solano</h1>
+
+    <p class="msg">
+      Documento de referência visual e técnico do sistema de design da Editora
+      Solano.
+    </p>
+
+    <div class="colophon">
+      <span><b>Versão</b> 1.0</span>
+      <span><b>Data</b> 27/08/2026</span>
+      <span><b>Status</b> Vigente — espelha o código em produção</span>
+      <span><b>Fonte</b> src/app/globals.css · src/motion · docs/HANDOFF_DEV.md</span>
+    </div>
+
+    <div class="note">
+      <b>Este documento registra o que existe.</b> Nenhum token, componente,
+      cor ou animação aqui foi inventado para a documentação: todos os valores
+      foram lidos do código em 27/08/2026. Onde uma decisão divergiu do Figma,
+      a divergência está anotada junto com o motivo.
+      <p>
+        A própria página é construída com esses tokens — as três famílias, a
+        paleta e a hairline de 1px são as do sistema. Os espécimes de cor
+        carregam o valor literal e não mudam com o tema; a interface em volta
+        deles muda.
+      </p>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <!-- ===================== ÍNDICE ===================== -->
+    <nav class="index" aria-label="Índice do documento">
+      <h2>Índice</h2>
+      <ol>
+        <li><a href="#principios"><b>02</b> Princípios</a></li>
+        <li><a href="#cores"><b>03</b> Cores</a></li>
+        <li><a href="#tipografia"><b>04</b> Tipografia</a></li>
+        <li><a href="#espacamento"><b>05</b> Espaçamento</a></li>
+        <li><a href="#efeitos"><b>06</b> Sombras e efeitos</a></li>
+        <li><a href="#motion"><b>07</b> Motion System</a></li>
+        <li><a href="#componentes"><b>08</b> Componentes</a></li>
+        <li><a href="#botoes"><b>09</b> Botões</a></li>
+        <li><a href="#formularios"><b>10</b> Formulários</a></li>
+        <li><a href="#vazios"><b>11</b> Estados vazios</a></li>
+        <li><a href="#layouts"><b>12</b> Layouts</a></li>
+        <li><a href="#imagens"><b>13</b> Imagens</a></li>
+        <li><a href="#responsividade"><b>14</b> Responsividade</a></li>
+        <li><a href="#navegacao"><b>15</b> Navegação</a></li>
+        <li><a href="#dodont"><b>16</b> Fazer / Evitar</a></li>
+        <li><a href="#checklist"><b>17</b> Checklist</a></li>
+        <li><a href="#mapeamento"><b>18</b> Design → Código</a></li>
+      </ol>
+    </nav>
+
+    <main>
+
+    <!-- ===================== 2 · PRINCÍPIOS ===================== -->
+    <section id="principios">
+      <p class="kicker">Princípios da marca <span>02</span></p>
+      <h2>Uma editora que publica devagar, e um site que se comporta assim</h2>
+
+      <p class="lede">
+        A linguagem visual da Editora Solano é editorial antes de ser digital.
+        A referência é o livro — margem generosa, uma coluna de leitura, tipos
+        com serifa e uma paleta tirada da terra e da mata. Nada na interface
+        deve parecer mais rápido do que o trabalho que ela descreve.
+      </p>
+
+      <div class="plates">
+        <div class="plate">
+          <div class="caption">
+            <span class="name">Editorial</span>
+            <span class="use">A página é composta, não montada. Hierarquia de livro: um título, uma linha de apoio, um corpo.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="caption">
+            <span class="name">Sofisticada</span>
+            <span class="use">Sofisticação por contenção. Três famílias, oito cores, uma sombra por função — e nada além.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="caption">
+            <span class="name">Natural</span>
+            <span class="use">Mata e terra são cores de lugar, não de interface. Nenhum azul de sistema entra na paleta.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="caption">
+            <span class="name">Contemplativa</span>
+            <span class="use">O movimento acompanha a leitura em vez de disputar com ela. Entradas de quase um segundo, sem repetição.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="caption">
+            <span class="name">Científica</span>
+            <span class="use">Rigor onde ninguém vê: tipo em escala, medidas derivadas do Figma, nenhum valor aproximado no olho.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="caption">
+            <span class="name">Literária</span>
+            <span class="use">O texto é o objeto. Todo componente existe para entregar uma frase que alguém escreveu.</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>O que o design prioriza</h3>
+
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Prioridade</th><th>Como aparece no sistema</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Respiro</strong></td>
+              <td>Coluna de conteúdo de 1320px dentro de um quadro de 1440 — 60px de goteira de cada lado. Seções separadas por 50px de fundo de página, e não por régua.</td>
+            </tr>
+            <tr>
+              <td><strong>Leitura</strong></td>
+              <td>Texto corrido limitado a ~80 caracteres. Corpo em Jost Light com entrelinha de 1.45 e 2% de tracking.</td>
+            </tr>
+            <tr>
+              <td><strong>Hierarquia</strong></td>
+              <td>Nove níveis tipográficos nomeados, cada um ligado a uma variável do Figma. Combinar família e tamanho no JSX está proibido — usa-se o utilitário.</td>
+            </tr>
+            <tr>
+              <td><strong>Simplicidade</strong></td>
+              <td>Um raio de canto (10px) e um de campo (6px). Cinco variantes de botão. Nenhum gradiente, nenhum vidro, nenhuma borda dupla.</td>
+            </tr>
+            <tr>
+              <td><strong>Permanência</strong></td>
+              <td>Componentes recebem conteúdo por prop e nenhum carrega texto fixo. O site sobrevive à troca de todo o conteúdo sem que um componente mude.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== 3 · CORES ===================== -->
+    <section id="cores">
+      <p class="kicker">Cores <span>03</span></p>
+      <h2>Oito cores, e nenhum hex solto</h2>
+
+      <p class="lede">
+        A paleta inteira do produto. Cada valor mapeia 1:1 para uma variável do
+        Figma e é declarado uma única vez, no bloco <code>@theme</code> de
+        <code>src/app/globals.css</code>. Escrever um hexadecimal no JSX é
+        proibido pela regra do projeto.
+      </p>
+
+      <div class="plates swatches">
+        <div class="plate">
+          <div class="field" style="background:#181713"></div>
+          <div class="caption">
+            <span class="name">Ink</span>
+            <span class="token">--color-ink</span>
+            <span class="value">#181713</span>
+            <span class="use">Texto principal e fundo das bandas escuras (Lançamentos, Comunidade, Podcast). Preto quente, levemente oliva — nunca #000.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:#fafafa"></div>
+          <div class="caption">
+            <span class="name">Background</span>
+            <span class="token">--color-bg</span>
+            <span class="value">#fafafa</span>
+            <span class="use">Fundo da página, e a cor do texto sobre as bandas ink. É o par de contraste do Ink nos dois sentidos.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:#ffffff"></div>
+          <div class="caption">
+            <span class="name">Paper</span>
+            <span class="token">--color-paper</span>
+            <span class="value">#ffffff</span>
+            <span class="use">Superfícies que precisam se destacar do fundo — campos de formulário e painéis claros.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:#71717a"></div>
+          <div class="caption">
+            <span class="name">Muted</span>
+            <span class="token">--color-muted</span>
+            <span class="value">#71717a</span>
+            <span class="use">Texto secundário e — a 20% de opacidade — a hairline de todo o sistema: <code>border-muted/20</code>.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:#283b2a"></div>
+          <div class="caption">
+            <span class="name">Mata</span>
+            <span class="token">--color-mata</span>
+            <span class="value">#283b2a</span>
+            <span class="use">Verde de marca. Hover do botão sólido, anel de foco do teclado e o realce do <code>PostCard</code>.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:#7a4e2d"></div>
+          <div class="caption">
+            <span class="name">Terra</span>
+            <span class="token">--color-terra</span>
+            <span class="value">#7a4e2d</span>
+            <span class="use">Terracota de marca. Ação secundária, link em hover e o estado de erro dos formulários.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:#d8cdb8"></div>
+          <div class="caption">
+            <span class="name">Areia</span>
+            <span class="token">--color-areia</span>
+            <span class="value">#d8cdb8</span>
+            <span class="use">Marca clara para uso sobre ink: sublinhado do botão <code>link</code> e o hover de qualquer texto na banda escura.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:#d4d4d8"></div>
+          <div class="caption">
+            <span class="name">Watermark</span>
+            <span class="token">--color-watermark</span>
+            <span class="value">#d4d4d8</span>
+            <span class="use">Fundo tingido de seção, sempre a 20% (<code>bg-watermark/20</code>), e a borda do cartão de newsletter.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>Terra e areia nunca trocam de lugar.</b> Terra é a cor de ação sobre
+        fundo claro; sobre a banda ink ela some — o contraste cai para cerca de
+        1,4:1. Areia é a resposta da paleta para marcas sobre ink, e é por isso
+        que o hover do <code>BlogPostCard</code> troca terra por areia no
+        instante em que o cartão inverte.
+      </div>
+
+      <div class="note flag">
+        <b>Um ponto conhecido.</b> A linha de metadados do
+        <code>BlogPostCard</code> e o índice do <code>GenreCard</code> mantêm
+        <code>text-muted</code> quando o cartão inverte para ink — cerca de
+        3,7:1, abaixo dos 4,5:1 de AA para texto normal. É paridade deliberada
+        entre os dois cartões, e a correção, se vier, precisa valer para os
+        dois ao mesmo tempo.
+      </div>
+    </section>
+
+    <!-- ===================== 4 · TIPOGRAFIA ===================== -->
+    <section id="tipografia">
+      <p class="kicker">Tipografia <span>04</span></p>
+      <h2>Três famílias, nove níveis</h2>
+
+      <p class="lede">
+        Cada nível é um utilitário do Tailwind declarado em
+        <code>globals.css</code> e ligado a uma variável do Figma. Recompor
+        família, tamanho e peso no JSX está fora da regra: usa-se o nome.
+      </p>
+
+      <h3>Famílias</h3>
+
+      <div class="specimens">
+        <div class="specimen">
+          <p class="spec-sample" style="font-family:var(--slab);font-weight:400;">Aqui a palavra vira semente</p>
+          <div class="spec-meta">
+            <span class="name">IBM Plex Serif</span>
+            <span class="token">--font-slab</span>
+            <span class="use">A voz estrutural: títulos de seção, rótulos, menu, botões e metadados. Pesos 400, 500 e 600 — não existe negrito nem itálico slab no sistema.</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <p class="spec-sample" style="font-family:var(--body);font-weight:300;">Aqui a palavra vira semente</p>
+          <div class="spec-meta">
+            <span class="name">Jost</span>
+            <span class="token">--font-body</span>
+            <span class="use">Todo o texto corrido e os campos de formulário. Variável, usada em 300 e 400.</span>
+          </div>
+        </div>
+        <div class="specimen">
+          <p class="spec-sample" style="font-family:var(--display);font-weight:600;">Aqui a palavra vira <em style="font-style:italic;">semente</em></p>
+          <div class="spec-meta">
+            <span class="name">Playfair Display</span>
+            <span class="token">--font-display</span>
+            <span class="use">Só as aberturas: o título de hero e o H2 editorial. O itálico existe e carrega a ênfase de marca — o <code>Emphasis</code> da home.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>IBM Plex Serif substituiu Josefin Slab</b> na biblioteca do Figma em
+        agosto de 2026. Com a troca, <code>Slab/h2</code> e <code>Slab/sub</code>
+        caíram de SemiBold para Regular e perderam os 10% de tracking: a Plex é
+        uma face bem mais larga, e o espacejamento que fazia a Josefin respirar
+        deixou de ser desejado. Nenhuma variável <code>Slab/*</code> carrega
+        tracking hoje.
+      </div>
+
+      <h3>Escala</h3>
+
+      <p>
+        Os tamanhos usam <code>clamp()</code>, de modo que a escala de desktop
+        degrada proporcionalmente até o mobile sem espalhar variantes de
+        breakpoint por componente. O limite superior de cada clamp é o valor
+        exato do Figma no quadro de 1440.
+      </p>
+
+      <div class="scale">
+        <div class="row">
+          <p class="sample" style="font-family:var(--display);font-weight:600;font-size:clamp(2.25rem,1.19rem + 4.42vw,4rem);line-height:1.406;letter-spacing:0.05em;">Aqui a palavra vira semente</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-display</code></dd></div>
+            <div><dt>Tamanho</dt><dd>36 → 64px</dd></div>
+            <div><dt>Peso</dt><dd>Playfair 600</dd></div>
+            <div><dt>Métrica</dt><dd>1.406 · +5%</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>O <code>&lt;h1&gt;</code> de toda página. Um por rota.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--display);font-weight:400;font-size:clamp(1.75rem,1.45rem + 1.25vw,2.25rem);line-height:1.2;letter-spacing:0.1em;">Título editorial de seção</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-h2</code></dd></div>
+            <div><dt>Tamanho</dt><dd>28 → 36px</dd></div>
+            <div><dt>Peso</dt><dd>Playfair 400</dd></div>
+            <div><dt>Métrica</dt><dd>1.2 · +10%</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>Título do livro na página individual e headings com <code>titleVariant="display"</code>.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--slab);font-weight:400;font-size:clamp(1.5rem,1.25rem + 1.04vw,2rem);line-height:1.2;">Navegue por gênero</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-slab-h2</code></dd></div>
+            <div><dt>Tamanho</dt><dd>24 → 32px</dd></div>
+            <div><dt>Peso</dt><dd>Plex Serif 400</dd></div>
+            <div><dt>Métrica</dt><dd>1.2 · 0</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>Título padrão de <code>SectionHeading</code> e o título dos cartões de gênero e de post.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--slab);font-weight:400;font-size:clamp(1.0625rem,0.98rem + 0.36vw,1.25rem);line-height:1.25;">Sobre a editora</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-slab-sub</code></dd></div>
+            <div><dt>Tamanho</dt><dd>17 → 20px</dd></div>
+            <div><dt>Peso</dt><dd>Plex Serif 400</dd></div>
+            <div><dt>Métrica</dt><dd>1.25 · 0</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>Olho acima do título de hero, nome do autor e título de entrada de agenda e de etapa da timeline.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--slab);font-weight:600;font-size:0.875rem;">Publique seu livro</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-slab-menu</code></dd></div>
+            <div><dt>Tamanho</dt><dd>14px fixo</dd></div>
+            <div><dt>Peso</dt><dd>Plex Serif 600</dd></div>
+            <div><dt>Métrica</dt><dd>normal · 0</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>Menu do cabeçalho, rótulos de campo, metadados de cartão e a ação “Ler Completo”.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--slab);font-weight:500;font-size:0.75rem;">Romances Históricos</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-slab-small</code></dd></div>
+            <div><dt>Tamanho</dt><dd>12px fixo</dd></div>
+            <div><dt>Peso</dt><dd>Plex Serif 500</dd></div>
+            <div><dt>Métrica</dt><dd>normal · 0</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>Todo rótulo de botão, o gênero no <code>BookCard</code> e os chips de tag. Migrou de 400 para 500 com a atualização dos botões.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--body);font-weight:300;font-size:clamp(1.0625rem,0.98rem + 0.36vw,1.25rem);line-height:1.25;letter-spacing:0.1em;">Somos uma editora onde literatura, arte e ecologia falam a mesma língua.</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-body-lg</code></dd></div>
+            <div><dt>Tamanho</dt><dd>17 → 20px</dd></div>
+            <div><dt>Peso</dt><dd>Jost 300</dd></div>
+            <div><dt>Métrica</dt><dd>1.25 · +10%</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>Linha de apoio de hero, descrição de seção e o texto de estado vazio.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--body);font-weight:400;font-size:0.875rem;line-height:1.45;letter-spacing:0.02em;">Cada livro é lapidado à mão, no ritmo de quem cultiva. Acompanhamos cada projeto do primeiro esboço ao livro na mão do leitor.</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-body</code></dd></div>
+            <div><dt>Tamanho</dt><dd>14px fixo</dd></div>
+            <div><dt>Peso</dt><dd>Jost 400</dd></div>
+            <div><dt>Métrica</dt><dd>1.45 · +2%</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>O texto corrido do site. Corpo do artigo, sinopse, biografia, descrição de cartão.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--body);font-weight:300;font-size:0.75rem;">Retorno em até 2 dias úteis</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-body-sm</code></dd></div>
+            <div><dt>Tamanho</dt><dd>12px fixo</dd></div>
+            <div><dt>Peso</dt><dd>Jost 300</dd></div>
+            <div><dt>Métrica</dt><dd>normal · 0</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>Nota de rodapé, legenda de cartão e a linha auxiliar do autor.</dd></div>
+          </dl>
+        </div>
+        <div class="row">
+          <p class="sample" style="font-family:var(--body);font-weight:300;font-size:1rem;">Busque por título</p>
+          <dl class="meta">
+            <div><dt>Token</dt><dd><code>text-field</code></dd></div>
+            <div><dt>Tamanho</dt><dd>16px → 12px em <code>md</code></dd></div>
+            <div><dt>Peso</dt><dd>Jost 300</dd></div>
+            <div><dt>Métrica</dt><dd>normal · 0</dd></div>
+            <div class="wide"><dt>Aplicação</dt><dd>Só campos de formulário. Ver a nota abaixo — a exceção de tamanho é técnica.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="note">
+        <b><code>text-field</code> é o único nível que cresce no mobile.</b> O
+        design pede 12px, e o Safari do iOS dá zoom na página inteira quando um
+        campo menor que 16px recebe foco. Abaixo de <code>md</code> o tamanho
+        segura em 16px e volta para 12px a partir dali — a tipografia de
+        desktop fica intocada e o leitor de celular não perde o enquadramento.
+      </div>
+    </section>
+
+    <!-- ===================== 5 · ESPAÇAMENTO ===================== -->
+    <section id="espacamento">
+      <p class="kicker">Espaçamento <span>05</span></p>
+      <h2>Dois tokens próprios sobre a escala do Tailwind</h2>
+
+      <p class="lede">
+        O projeto acrescenta apenas duas medidas ao Tailwind; todo o resto vem
+        da escala padrão de 4px. Medidas fixas do Figma que não caem na escala
+        entram como valor arbitrário e sempre acompanhadas do comentário que
+        diz de onde vieram.
+      </p>
+
+      <div class="plates">
+        <div class="plate">
+          <div class="field"><div class="bar" style="width:60px"></div></div>
+          <div class="caption">
+            <span class="name">Gutter</span>
+            <span class="token">--spacing-gutter</span>
+            <span class="value">60px</span>
+            <span class="use">Goteira lateral do quadro de 1440, o que produz a coluna de 1320. Aplicada como <code>xl:px-gutter</code>.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field"><div class="bar" style="width:50px"></div></div>
+          <div class="caption">
+            <span class="name">Section</span>
+            <span class="token">--spacing-section</span>
+            <span class="value">50px</span>
+            <span class="use">Respiro interno de banda e o intervalo de fundo de página entre seções. <code>md:py-section</code>.</span>
+          </div>
+        </div>
+      </div>
+
+      <h4>A goteira em três larguras</h4>
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Faixa</th><th>Classe</th><th class="num">Goteira</th><th>Coluna de conteúdo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Base</td><td><code>px-6</code></td><td class="num">24px</td><td>Largura da tela menos 48</td></tr>
+            <tr><td><code>md</code> — 768px</td><td><code>md:px-10</code></td><td class="num">40px</td><td>Largura da tela menos 80</td></tr>
+            <tr><td><code>xl</code> — 1280px</td><td><code>xl:px-gutter</code></td><td class="num">60px</td><td>1320px no quadro de 1440</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Ritmos recorrentes</h4>
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Medida</th><th class="num">Valor</th><th>Onde</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Padding de cartão</td><td class="num">20px</td><td><code>GenreCard</code>, <code>BlogPostCard</code>, cartão de newsletter — <code>p-5</code></td></tr>
+            <tr><td>Gap interno de cartão</td><td class="num">20px</td><td>Entre as linhas de um cartão em caixa — <code>gap-5</code></td></tr>
+            <tr><td>Padding de painel</td><td class="num">24 → 28px</td><td><code>Panel</code>, os cartões de formulário — <code>p-6 md:p-7</code></td></tr>
+            <tr><td>Gap de grade de capas</td><td class="num">33px</td><td>Ritmo das 5 capas de 237px que fecham a coluna de 1320 — <code>xl:gap-x-[33px]</code></td></tr>
+            <tr><td>Cabeçalho → conteúdo</td><td class="num">48px</td><td>Distância padrão de <code>SectionHeading</code> à lista que ele abre — <code>mt-12</code></td></tr>
+            <tr><td>Hairline colapsada</td><td class="num">−1px</td><td>Grades encostadas: <code>pt-px pl-px</code> na grade e <code>[&amp;&gt;*]:-mt-px [&amp;&gt;*]:-ml-px</code> nas células</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>A hairline colapsada é um padrão, não um truque isolado.</b> Grade de
+        gêneros, grade de comunidades e arquivo do blog usam as mesmas quatro
+        classes para que bordas vizinhas virem uma régua só em vez de duas.
+        Quem inserir um wrapper entre a grade e as células quebra o seletor
+        <code>[&amp;&gt;*]</code> — foi exatamente o que aconteceu ao introduzir
+        o Motion System, e a saída foi o <code>&lt;Reveal as="ul"&gt;</code>
+        substituir a lista em vez de envolvê-la.
+      </div>
+    </section>
+
+    <!-- ===================== 6 · SOMBRAS E EFEITOS ===================== -->
+    <section id="efeitos">
+      <p class="kicker">Sombras e efeitos <span>06</span></p>
+      <h2>Três elevações e dois tokens de movimento</h2>
+
+      <div class="plates">
+        <div class="plate">
+          <div class="field" style="background:var(--surface-sunk)">
+            <div class="chip-shadow" style="box-shadow:0 4px 6px 0 #00000017"></div>
+          </div>
+          <div class="caption">
+            <span class="name">shadow-card</span>
+            <span class="token">--shadow-card</span>
+            <span class="value">0 4px 6px 0 #00000017</span>
+            <span class="use">Estilo <em>shadow</em> do Figma. Cartões em caixa e painéis — nunca capas.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:var(--surface-sunk)">
+            <div class="chip-shadow" style="box-shadow:0 10px 10px 0 #0000001a"></div>
+          </div>
+          <div class="caption">
+            <span class="name">shadow-cover</span>
+            <span class="token">--shadow-cover</span>
+            <span class="value">0 10px 10px 0 #0000001a</span>
+            <span class="use">Estilo <em>sombras capas de livros</em> do Figma. Só capa — no <code>BookCard</code> e na imagem principal da galeria.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field" style="background:var(--surface-sunk)">
+            <div class="chip-shadow" style="box-shadow:0 18px 24px 0 #00000026;transform:translateY(-4px) scale(1.01)"></div>
+          </div>
+          <div class="caption">
+            <span class="name">shadow-cover-raised</span>
+            <span class="token">--shadow-cover-raised</span>
+            <span class="value">0 18px 24px 0 #00000026</span>
+            <span class="use">Estado elevado da anterior, no hover de uma capa que leva a algum lugar. <b>Não é estilo do Figma</b> — derivado, mesma cor e direção.</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Tokens de movimento no CSS</h3>
+
+      <p>
+        Só existem dois, e existem porque o CSS os dirige. Os tempos de entrada
+        moram em <code>src/motion/presets.ts</code>, porque quem os toca é o
+        GSAP — e um token que nenhuma folha de estilo lê envelhece sem ninguém
+        perceber. Os dois arquivos se referenciam.
+      </p>
+
+      <div class="plates">
+        <div class="plate">
+          <div class="field"><div class="curve" aria-hidden="true"></div></div>
+          <div class="caption">
+            <span class="name">Ease editorial</span>
+            <span class="token">--ease-editorial</span>
+            <span class="value">cubic-bezier(.215, .61, .355, 1)</span>
+            <span class="use">Forma cubic-bezier do <code>power3.out</code> do GSAP. Faz um hover em CSS e uma entrada em GSAP no mesmo cartão terem o mesmo tato.</span>
+          </div>
+        </div>
+        <div class="plate">
+          <div class="field"><div class="bar" style="width:90px"></div></div>
+          <div class="caption">
+            <span class="name">Duração de hover</span>
+            <span class="token">--duration-hover</span>
+            <span class="value">300ms</span>
+            <span class="use">Resposta ao ponteiro. Longa o bastante para ler como movimento, curta o bastante para a capa assentar antes do ponteiro.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="note flag">
+        <b>O Tailwind v4 não tem namespace <code>--duration-*</code>.</b> Tem
+        <code>--ease-*</code>, e por isso <code>ease-editorial</code> vira
+        classe sozinho. A duração precisa da utility declarada logo abaixo do
+        bloco de tipografia:
+        <code>@utility duration-hover { --tw-duration: var(--duration-hover); transition-duration: var(--duration-hover); }</code>.
+        Sem ela a classe não existe e a transição cai calada nos 150ms padrão
+        do Tailwind. Já aconteceu uma vez.
+      </div>
+
+      <h3>Raios de canto</h3>
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Token</th><th class="num">Valor</th><th>Aplicação</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>--radius-panel</code></td><td class="num">10px</td><td>Painéis de Publique e Contato, cartão ink da assessoria. <code>rounded-panel</code></td></tr>
+            <tr><td><code>rounded-md</code></td><td class="num">6px</td><td>Campos de formulário. É a escala do Tailwind, então não precisa de token</td></tr>
+            <tr><td><code>rounded</code></td><td class="num">4px</td><td>Botões — canto do componente <em>Botão</em> do Figma</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== 7 · MOTION SYSTEM ===================== -->
+    <section id="motion">
+      <p class="kicker">Motion System <span>07</span></p>
+      <h2>Nada deve parecer que chegou. Deve parecer que estava e foi descoberto</h2>
+
+      <p class="lede">
+        Camada de apresentação em GSAP, confinada a <code>src/motion/</code>.
+        Nenhum componente ou layout importa <code>gsap</code> — importam um
+        componente, <code>&lt;Reveal&gt;</code>. Trocar a biblioteca não toca em
+        página nenhuma.
+      </p>
+
+      <h3>Filosofia</h3>
+
+      <div class="cols">
+        <div>
+          <h4>O que o movimento faz</h4>
+          <ul class="ticks">
+            <li>Acompanha a leitura, em vez de disputar com ela</li>
+            <li>Revela conteúdo que o leitor ainda não viu</li>
+            <li>Acontece uma vez e não se repete ao rolar de volta</li>
+            <li>Usa um vocabulário só: opacidade e um deslocamento curto</li>
+          </ul>
+        </div>
+        <div>
+          <h4>O que não faz</h4>
+          <ul class="crosses">
+            <li>Escala, rotação, blur, parallax ou loop</li>
+            <li>Cascata elemento por elemento — isso lê como interface se montando</li>
+            <li>Animação em controles: breadcrumb, voltar, filtros, formulários</li>
+            <li>Movimento em decoração — as espirais de marca d'água nunca animam</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>A razão que protege a direção é stagger ÷ duração.</b> Sempre uma
+        fração pequena: 9% no texto, 5% em inventários, 16% em grades. É isso
+        que faz um grupo se sobrepor numa onda só. Acima de uns 20% o
+        movimento deixa de ler como revelação e passa a ler como montagem — é o
+        número a proteger em qualquer ajuste futuro.
+      </div>
+
+      <h3>Presets</h3>
+
+      <p>
+        Quatro, e nenhum a mais. O botão reproduz os valores reais de
+        <code>src/motion/presets.ts</code>; a curva é o
+        <code>--ease-editorial</code>, forma CSS do <code>power3.out</code>.
+      </p>
+
+      <div class="presets">
+        <article class="preset">
+          <header>
+            <span class="name">heroReveal</span>
+            <button type="button" class="play" data-preset="hero">Reproduzir</button>
+          </header>
+          <div class="stage"><div class="tile hero"><span></span><span></span></div></div>
+          <dl class="meta">
+            <div><dt>Deslocamento</dt><dd>y 12 → 0</dd></div>
+            <div><dt>Duração</dt><dd>1,0 s</dd></div>
+            <div><dt>Stagger</dt><dd>0</dd></div>
+            <div><dt>Easing</dt><dd>power3.out</dd></div>
+          </dl>
+          <p class="uses">
+            Só o bloco de abertura de uma página. O stagger zero é a definição
+            dele: um olho que chega antes do próprio título é a forma mais
+            confiável de fazer a página parecer uma interface inicializando.
+          </p>
+        </article>
+
+        <article class="preset">
+          <header>
+            <span class="name">fadeUp</span>
+            <button type="button" class="play" data-preset="fadeup">Reproduzir</button>
+          </header>
+          <div class="stage"><div class="tile fadeup"><span></span><span></span><span></span></div></div>
+          <dl class="meta">
+            <div><dt>Deslocamento</dt><dd>y 16 → 0</dd></div>
+            <div><dt>Duração</dt><dd>0,9 s</dd></div>
+            <div><dt>Stagger</dt><dd>0,08 s</dd></div>
+            <div><dt>Easing</dt><dd>power3.out</dd></div>
+          </dl>
+          <p class="uses">
+            Seções, cabeçalhos e blocos editoriais. É o preset padrão — um
+            <code>&lt;Reveal&gt;</code> sem <code>preset</code> usa este.
+          </p>
+        </article>
+
+        <article class="preset">
+          <header>
+            <span class="name">fadeIn</span>
+            <button type="button" class="play" data-preset="fadein">Reproduzir</button>
+          </header>
+          <div class="stage"><div class="tile fadein"><span></span></div></div>
+          <dl class="meta">
+            <div><dt>Deslocamento</dt><dd>nenhum</dd></div>
+            <div><dt>Duração</dt><dd>1,0 s</dd></div>
+            <div><dt>Stagger</dt><dd>0,05 s</dd></div>
+            <div><dt>Easing</dt><dd>power3.out</dd></div>
+          </dl>
+          <p class="uses">
+            Imagens, carrosséis e inventários. Uma capa que também viaja chama
+            atenção para o movimento em vez de para si mesma.
+          </p>
+        </article>
+
+        <article class="preset">
+          <header>
+            <span class="name">staggerCards</span>
+            <button type="button" class="play" data-preset="cards">Reproduzir</button>
+          </header>
+          <div class="stage"><div class="tile cards"><span></span><span></span><span></span><span></span></div></div>
+          <dl class="meta">
+            <div><dt>Deslocamento</dt><dd>y 18 → 0</dd></div>
+            <div><dt>Duração</dt><dd>0,75 s</dd></div>
+            <div><dt>Stagger</dt><dd>0,12 s</dd></div>
+            <div><dt>Easing</dt><dd>power3.out</dd></div>
+          </dl>
+          <p class="uses">
+            Grades e listas. Cada cartão pesa menos individualmente e o stagger
+            maior transforma nove chegadas isoladas numa varredura só.
+            <b>Carrossel nunca recebe stagger</b> — a fileira já está
+            parcialmente fora da tela.
+          </p>
+        </article>
+      </div>
+
+      <p class="reduced-note" hidden>
+        <b>Movimento reduzido está ativo neste navegador.</b> Os botões acima
+        não animam — que é exatamente o que o sistema faz no site. Nenhum
+        conteúdo depende da animação para existir.
+      </p>
+
+      <h4>Pausas entre blocos</h4>
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Token</th><th class="num">Valor</th><th>Onde</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>MOTION_HERO_DELAY</code></td><td class="num">0,35 s</td><td>Entre os dois tempos de um hero. Um terço da duração do preset</td></tr>
+            <tr><td><code>MOTION_COLUMN_DELAY</code></td><td class="num">0,20 s</td><td>Coluna que segue coluna: a informação do livro após a capa, a sidebar após o artigo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Regras</h3>
+
+      <div class="rules">
+        <article>
+          <h4>Nada visível é escondido</h4>
+          <p>
+            O HTML que o servidor manda é a página pronta. Não existe CSS que
+            esconda nada, nem estado inicial invisível, nem
+            <code>&lt;noscript&gt;</code> de resgate. Se o GSAP não rodar — script
+            desligado, bundle falhado, um crawler lendo o markup — todas as
+            seções aparecem completas.
+          </p>
+          <p>
+            A regra é a posição do grupo na montagem: <b>fora da tela</b> recebe
+            o preset como escrito, segurado por ScrollTrigger; <b>na tela</b>
+            recebe o mesmo preset sem o canal de opacidade — sobe e fica legível
+            em todos os quadros. Por isso <code>fadeIn</code>, que só tem
+            opacidade, simplesmente não anima acima da dobra.
+          </p>
+        </article>
+        <article>
+          <h4>prefers-reduced-motion</h4>
+          <p>
+            <code>gsap.matchMedia</code> com
+            <code>(prefers-reduced-motion: no-preference)</code>: o tween não é
+            criado, não é criado e encurtado. A query é viva — quem liga a
+            preferência no meio da sessão tem os tweens revertidos.
+          </p>
+          <p>
+            No hover das capas, a variante <code>motion-safe:</code> guarda os
+            dois transforms e deixa a sombra de fora: com movimento reduzido a
+            capa ainda responde ao ponteiro, só não se mexe.
+          </p>
+        </article>
+        <article>
+          <h4>Animação não altera estrutura</h4>
+          <p>
+            <code>&lt;Reveal&gt;</code> renderiza <code>display: contents</code>
+            no modo padrão — a caixa some e os filhos continuam sendo células de
+            grid ou itens de flex do pai. Quando o elemento já existia
+            (<code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, ou qualquer
+            container com <code>[&amp;&gt;*]</code>), <code>as</code> substitui em
+            vez de envolver.
+          </p>
+          <p>
+            É a única fronteira de cliente que a animação adiciona. Os filhos
+            chegam como prop já renderizados no servidor: envolver uma grade de
+            <code>BookCard</code> não puxa <code>BookCard</code> para o bundle.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== 8 · COMPONENTES ===================== -->
+    <section id="componentes">
+      <p class="kicker">Componentes <span>08</span></p>
+      <h2>Catálogo</h2>
+
+      <p class="lede">
+        Componentes recebem dados por prop e nenhum carrega texto fixo — vale
+        também para mensagem de estado vazio, que é fala da editora e mora em
+        <code>lib/content</code>.
+      </p>
+
+      <h3>UI compartilhada</h3>
+
+      <div class="comps">
+        <article class="comp">
+          <div class="demo"><span class="btn solid">Publique Seu Livro</span></div>
+          <div class="body">
+            <span class="name">Button</span>
+            <p>Cinco variantes num componente só. Vira <code>&lt;a&gt;</code> quando recebe <code>href</code> e <code>&lt;button&gt;</code> quando recebe <code>onClick</code> — a união discriminada impede os dois juntos.</p>
+            <p class="rule">Rótulo sempre em <code>text-slab-small</code>. Destino externo ganha âncora simples com aviso de nova aba.</p>
+          </div>
+        </article>
+
+        <article class="comp">
+          <div class="demo">
+            <div class="acc">
+              <div class="acc-row"><span>Sinopse</span><span class="caret">⌃</span></div>
+              <div class="acc-body">Forem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            </div>
+          </div>
+          <div class="body">
+            <span class="name">Accordion</span>
+            <p>Painel expansível da página de livro. Sinopse abre por padrão; Ficha Técnica abre fechada, como o Figma desenha.</p>
+            <p class="rule">Ficha vazia mantém o painel e abre em branco — saber que nada foi registrado é diferente do painel não existir.</p>
+          </div>
+        </article>
+
+        <article class="comp">
+          <div class="demo"><span class="backlink">‹&nbsp;&nbsp;Voltar</span></div>
+          <div class="body">
+            <span class="name">BackLink</span>
+            <p>Volta pelo histórico do leitor, com rota de segurança quando a URL foi aberta direto.</p>
+            <p class="rule">Nunca animado: é a saída, e a saída não pode estar pendente.</p>
+          </div>
+        </article>
+
+        <article class="comp">
+          <div class="demo"><span class="crumbs">Catálogo <i>›</i> Romances Históricos <i>›</i> <b>O Menino da Seca</b></span></div>
+          <div class="body">
+            <span class="name">Breadcrumb</span>
+            <p>Só na página de livro. O gênero principal é o primeiro de <code>genreSlugs</code>; sem gênero, um item a menos.</p>
+            <p class="rule">O item corrente não é link.</p>
+          </div>
+        </article>
+
+        <article class="comp">
+          <div class="demo"><span class="empty">Novos lançamentos serão apresentados em breve.</span></div>
+          <div class="body">
+            <span class="name">EmptyState</span>
+            <p>Um parágrafo, dois tons — <code>light</code> e <code>dark</code>, porque na banda ink o cinza claro quase some.</p>
+            <p class="rule">Sem valor padrão: uma seção sem mensagem não compila, em vez de renderizar algo que ninguém aprovou.</p>
+          </div>
+        </article>
+
+        <article class="comp">
+          <div class="demo">
+            <span class="pagenav"><i>←</i><b>Página 1 de 3</b><i>→</i></span>
+          </div>
+          <div class="body">
+            <span class="name">PageNav</span>
+            <p>Primeira e única paginação do projeto — só o blog pagina, de 9 em 9. Não existe no Figma.</p>
+            <p class="rule">Montado com peças já aprovadas: o quadrado de 36px e a seta do <code>Carousel</code>, com o desabilitado a 25%.</p>
+          </div>
+        </article>
+
+        <article class="comp">
+          <div class="demo"><div class="panel-demo">Assessoria de imprensa</div></div>
+          <div class="body">
+            <span class="name">Panel</span>
+            <p>Superfície de canto 10px, tom claro ou ink. Cartão de sede, cartão da assessoria, blocos de formulário.</p>
+            <p class="rule">Tom é prop, não <code>className</code> — <code>cn</code> é um juntador simples e duas classes de cor resolveriam por ordem da folha, não por intenção.</p>
+          </div>
+        </article>
+
+        <article class="comp">
+          <div class="demo">
+            <div class="heading-demo">
+              <span class="eyebrow">Coautoria</span>
+              <span class="title">Quem escreve com a casa</span>
+              <span class="desc">Autores, tradutores e organizadores que assinam com a editora.</span>
+            </div>
+          </div>
+          <div class="body">
+            <span class="name">SectionHeading</span>
+            <p>Olho, título, descrição e um slot de ação à direita. Alinhamento à esquerda ou centralizado.</p>
+            <p class="rule">Entra como <b>um bloco só</b> no Motion System. Um título que se separa da própria linha de apoio lê como interface se montando.</p>
+          </div>
+        </article>
+
+        <article class="comp">
+          <div class="demo"><div class="container-demo"><i></i><span>1320</span><i></i></div></div>
+          <div class="body">
+            <span class="name">Container</span>
+            <p>A goteira da página: 1440 de máximo, 24 / 40 / 60 de padding lateral.</p>
+            <p class="rule">Aceita <code>as</code> para não forçar uma <code>&lt;div&gt;</code> onde o semântico pede outra coisa.</p>
+          </div>
+        </article>
+      </div>
+
+      <h3>Cartões</h3>
+
+      <p>
+        Quatro cartões, e a razão de serem quatro está aqui. A pergunta que
+        decide se algo novo é variante ou componente é a mesma da seção 17.
+      </p>
+
+      <div class="cards-doc">
+        <article class="card-doc">
+          <h4>BookCard <span>livros</span></h4>
+          <div class="card-demo">
+            <div class="bookcard" tabindex="0">
+              <div class="cover-art"></div>
+              <span class="genre">Romance</span>
+              <span class="ttl">O Menino da Seca</span>
+              <span class="auth">Solano</span>
+            </div>
+            <p class="hint">Passe o ponteiro ou dê foco na capa</p>
+          </div>
+          <p><b>Composição.</b> Capa 237 × 322 com <code>shadow-cover</code>, depois gênero, título e autor. Gênero e título herdam a cor da banda; o autor mantém o cinza fixo.</p>
+          <p><b>Hover.</b> Elevação de 4px, escala 1.01 e a sombra abrindo para <code>shadow-cover-raised</code>, em 300ms. É <b>CSS, não GSAP</b>: um hover em GSAP exigiria listeners, listeners exigem client component, e este é o componente mais repetido do site.</p>
+          <p><b>Navegação.</b> O cartão inteiro é o link para <code>/catalogo/[slug]</code>. Em quatro contextos — Home, Catálogo, recomendados e bibliografia do autor —, sempre o mesmo componente.</p>
+          <p class="rule">Nenhuma ação comercial dentro do cartão. Âncora dentro de âncora é HTML inválido, e a regra editorial aponta para o mesmo lugar.</p>
+        </article>
+
+        <article class="card-doc">
+          <h4>GenreCard <span>gêneros</span></h4>
+          <div class="card-demo">
+            <div class="genrecard" tabindex="0">
+              <span class="idx">01</span>
+              <span class="ttl">Romances Históricos</span>
+              <span class="dsc">Narrativas que unem personagens, épocas e acontecimentos reais.</span>
+            </div>
+            <p class="hint">Passe o ponteiro ou dê foco no cartão</p>
+          </div>
+          <p><b>Composição.</b> 366 × 181, hairline, padding 20, gaps 20. O índice fica à esquerda enquanto título e descrição centralizam — o componente base é alinhado à esquerda, e toda instância da Home centraliza os dois.</p>
+          <p><b>Hover.</b> A variante <code>card-1</code> do Figma: fundo ink, texto claro, <code>transition-colors</code> de 200ms. Sem elevação — a sombra fica onde está.</p>
+          <p class="rule">O hover está preso ao <code>href</code>: um cartão estático nunca parece clicável. Remover a prop leva o hover junto, em silêncio.</p>
+        </article>
+
+        <article class="card-doc">
+          <h4>BlogPostCard <span>publicações</span></h4>
+          <div class="card-demo">
+            <div class="blogcard" tabindex="0">
+              <span class="meta">Bastidores - 15/03/2026</span>
+              <span class="ttl">Titulo do Post</span>
+              <span class="exc">Um texto pequeno, no máximo 100 palavras para resumir o post.</span>
+              <span class="act">Ler Completo →</span>
+            </div>
+            <p class="hint">Passe o ponteiro ou dê foco no cartão</p>
+          </div>
+          <p><b>Por que não é variante do PostCard.</b> Caixa fechada com borda e <code>shadow-card</code>, 21px de padding, quatro linhas — metadados, título, resumo, ação. Quatro das cinco características divergem do cartão da Home: uma prop <code>variant</code> produziria dois layouts com um nome só.</p>
+          <p><b>Hover.</b> O mesmo do <code>GenreCard</code>, por padronização: fundo ink, texto claro. A ação troca terra por <b>areia</b> — terra sobre ink não registra como estado.</p>
+          <p class="rule">O resumo é cortado em três linhas. O texto é guardado inteiro e mostrado truncado, para que uma fileira nunca quebre porque alguém escreveu até o limite.</p>
+        </article>
+
+        <article class="card-doc">
+          <h4>PostCard <span>coluna do blog na Home</span></h4>
+          <div class="card-demo">
+            <div class="postcard" tabindex="0">
+              <span class="meta">Bastidores</span>
+              <span class="ttl">Titulo do Post</span>
+              <span class="exc">Um texto pequeno, no máximo 100 palavras para resumir o post.</span>
+            </div>
+            <p class="hint">Passe o ponteiro ou dê foco no cartão</p>
+          </div>
+          <p><b>A diferença, campo a campo.</b> 680 de largura contra 432; hairline inferior contra caixa fechada; só a tag contra tag e data; nenhuma ação contra “Ler Completo”.</p>
+          <p><b>Hover.</b> O texto vira <code>mata</code>. Sem inversão de fundo — não é um cartão em caixa, e inverter uma linha sobre hairline não tem superfície onde acontecer.</p>
+          <p class="rule">Passou a ser clicável quando o blog foi implementado. Eram os únicos cartões do site que não levavam a lugar nenhum.</p>
+        </article>
+      </div>
+
+      <div class="note">
+        <b>Duas duplicações são deliberadas.</b> <code>PostCard</code> e
+        <code>BlogPostCard</code> parecem candidatos a fusão e não são, pelo
+        motivo acima. <code>BookCard</code> e <code>BlogPostCard</code>
+        compartilham só o fato de serem cartões clicáveis — nada mais.
+      </div>
+    </section>
+
+    <!-- ===================== 9 · BOTÕES ===================== -->
+    <section id="botoes">
+      <p class="kicker">Botões <span>09</span></p>
+      <h2>Cinco variantes, um rótulo</h2>
+
+      <p class="lede">
+        Todas partem da mesma base: <code>text-slab-small</code>, alinhamento
+        central, <code>gap-2.5</code> entre ícone e rótulo, transição de cor de
+        200ms e desabilitado a 50%.
+      </p>
+
+      <div class="btn-grid">
+        <div class="btn-cell">
+          <div class="btn-stage"><span class="btn solid">Publique Seu Livro</span></div>
+          <div class="btn-info">
+            <span class="name">solid</span>
+            <span class="value">bg-ink · text-bg · hover bg-mata</span>
+            <span class="use">Ação primária. Componente <em>Botão</em> do Figma.</span>
+          </div>
+        </div>
+        <div class="btn-cell">
+          <div class="btn-stage"><span class="btn terra">Ver o Catálogo</span></div>
+          <div class="btn-info">
+            <span class="name">terra</span>
+            <span class="value">bg-terra · text-bg · hover bg-mata</span>
+            <span class="use">Ação secundária da Home. O hover reaproveita o estado do sólido.</span>
+          </div>
+        </div>
+        <div class="btn-cell">
+          <div class="btn-stage dark"><span class="btn mata">Assinar</span></div>
+          <div class="btn-info">
+            <span class="name">mata</span>
+            <span class="value">bg-mata · text-bg · hover brightness-125</span>
+            <span class="use">Só na banda ink. Escurecer o fundo faria o botão sumir, então o hover clareia o mesmo verde.</span>
+          </div>
+        </div>
+        <div class="btn-cell">
+          <div class="btn-stage"><span class="btn outline">Conheça o Método <i>→</i></span></div>
+          <div class="btn-info">
+            <span class="name">outline</span>
+            <span class="value">border-current · hover bg-current/5</span>
+            <span class="use">Funciona nos dois tons porque a borda é <code>currentColor</code>. Nenhum hover foi desenhado; 5% da cor corrente mantém discreto.</span>
+          </div>
+        </div>
+        <div class="btn-cell">
+          <div class="btn-stage"><span class="btn linkv">Saiba mais</span></div>
+          <div class="btn-info">
+            <span class="name">link</span>
+            <span class="value">border-b border-areia · hover border-terra</span>
+            <span class="use">Variante 2 do <em>Botão icon</em>: sublinhado areia que vira terra.</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Estados</h3>
+
+      <div class="states">
+        <div class="state"><div class="btn-stage"><span class="btn solid">Normal</span></div><span>normal</span></div>
+        <div class="state"><div class="btn-stage"><span class="btn solid is-hover">Hover</span></div><span>hover — <code>bg-mata</code></span></div>
+        <div class="state"><div class="btn-stage"><span class="btn solid is-focus">Focus</span></div><span>focus-visible — anel mata 2px, offset 2px</span></div>
+        <div class="state"><div class="btn-stage"><span class="btn solid is-disabled">Disabled</span></div><span>disabled — 50%, cursor bloqueado</span></div>
+      </div>
+
+      <div class="note">
+        <b>O anel de foco não vem do Figma.</b> O arquivo não desenha estado de
+        foco; este é uma linha de base de acessibilidade tirada da paleta —
+        2px de <code>mata</code> com 2px de afastamento. Vive fora de
+        <code>@layer base</code> de propósito: dentro dela o reset do Tailwind
+        vencia por ordem de origem e transformava todo anel em
+        <code>currentColor</code>, ou seja, um anel cinza sobre texto cinza,
+        que é exatamente o caso para o qual o anel existe.
+      </div>
+
+      <h4>Anatomia</h4>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Propriedade</th><th>Valor</th><th>Observação</th></tr></thead>
+          <tbody>
+            <tr><td>Tipografia</td><td><code>text-slab-small</code></td><td>Plex Serif 500, 12px. Migrou de 400 com a atualização de agosto de 2026</td></tr>
+            <tr><td>Padding</td><td><code>p-2.5</code> — 10px</td><td>Uniforme nas variantes preenchidas e na outline</td></tr>
+            <tr><td>Raio</td><td><code>rounded</code> — 4px</td><td>Canto do componente do Figma. A variante <code>link</code> não tem raio</td></tr>
+            <tr><td>Ícone</td><td>slot <code>icon</code> à esquerda, <code>hasIcon</code> à direita</td><td>A seta é <code>ArrowRightIcon</code> em <code>currentColor</code> — nunca uma imagem</td></tr>
+            <tr><td>Gap</td><td><code>gap-2.5</code> — 10px</td><td>Entre glifo e rótulo</td></tr>
+            <tr><td>Quebra</td><td><code>whitespace-nowrap</code></td><td>Rótulo de botão não quebra linha</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== 10 · FORMULÁRIOS ===================== -->
+    <section id="formularios">
+      <p class="kicker">Formulários <span>10</span></p>
+      <h2>Quatro formulários, uma caixa</h2>
+
+      <p class="lede">
+        Contato, envio de originais, materiais e newsletter compartilham a
+        mesma casca de campo. Todos validam no cliente e param no ponto de
+        integração — a validação de interface não substitui checagem no
+        servidor.
+      </p>
+
+      <div class="form-demo">
+        <div class="field-row">
+          <label>Nome Completo <i>*</i></label>
+          <div class="shell-box">João da Silva</div>
+        </div>
+        <div class="field-row">
+          <label>Gênero literário</label>
+          <div class="shell-box select">Selecione um gênero <i>⌄</i></div>
+        </div>
+        <div class="field-row">
+          <label>E-mail <i>*</i></label>
+          <div class="shell-box err">joao@</div>
+          <span class="err-msg">Informe um e-mail válido.</span>
+        </div>
+        <div class="field-row">
+          <label>Original (PDF ou DOCX)</label>
+          <div class="shell-box upload"><span>Nenhum arquivo selecionado</span><span class="pick">Escolher arquivo</span></div>
+        </div>
+      </div>
+
+      <div class="comps">
+        <article class="comp">
+          <div class="body">
+            <span class="name">FieldShell</span>
+            <p>A caixa que todo campo compartilha: canto de 6px, hairline sobre o fundo da página, 8px de padding vertical e 12px à esquerda.</p>
+            <p class="rule">O erro troca a borda para <code>terra</code> e liga <code>aria-describedby</code> à mensagem. Cor nunca é o único sinal — a frase acompanha.</p>
+          </div>
+        </article>
+        <article class="comp">
+          <div class="body">
+            <span class="name">SelectField</span>
+            <p>Mesma caixa dos campos de texto, com o <code>CaretDown</code> de 24px à direita.</p>
+            <p class="rule">É um <code>&lt;select&gt;</code> nativo — teclado, leitor de tela e o seletor do sistema no celular vêm de graça.</p>
+          </div>
+        </article>
+        <article class="comp">
+          <div class="body">
+            <span class="name">FileUpload</span>
+            <p>Mostra o nome do arquivo escolhido e um controle para limpar. Sem arquivo, o texto diz isso.</p>
+            <p class="rule">A hairline escurece no hover — o único campo com afordância de alvo, porque é o único que abre um seletor do sistema.</p>
+          </div>
+        </article>
+        <article class="comp">
+          <div class="body">
+            <span class="name">FormField</span>
+            <p>Rótulo em <code>text-slab-menu</code>, o asterisco de obrigatório em <code>muted</code> e a mensagem de erro em <code>text-body-sm</code> terra.</p>
+            <p class="rule">Rótulo é <code>&lt;label&gt;</code> ligado por <code>htmlFor</code>, nunca um parágrafo acima do campo.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== 11 · ESTADOS VAZIOS ===================== -->
+    <section id="vazios">
+      <p class="kicker">Estados vazios <span>11</span></p>
+      <h2>A regra depende do tipo de página</h2>
+
+      <div class="two-up">
+        <article class="panel-doc">
+          <h4>Página de coleção ou listagem</h4>
+          <p class="verdict ok">Mantém a estrutura</p>
+          <div class="empty-demo">
+            <span class="e-title">Escritos da Casa</span>
+            <span class="e-msg">Novos conteúdos serão publicados em breve.</span>
+          </div>
+          <p>Título, espaçamento e enquadramento permanecem, e uma linha editorial toma o lugar da lista. Quem abriu a página veio pela lista: devolver o hero e mais nada não responde à pergunta que trouxe o leitor.</p>
+          <p class="rule">Blog, Eventos, Catálogo, Cursos, Comunidades, Podcast, Imprensa e as listas da Home.</p>
+        </article>
+
+        <article class="panel-doc">
+          <h4>Página de item</h4>
+          <p class="verdict off">Oculta o bloco</p>
+          <div class="empty-demo ghosted">
+            <span class="e-title">Recomendados</span>
+            <span class="e-ghost">— a banda inteira não renderiza —</span>
+          </div>
+          <p>Sem mensagem. Quem abriu um livro veio pelo livro; avisar que não há recomendações é ruído sobre algo que ninguém procurava.</p>
+          <p class="rule">Recomendações do livro, bibliografia do autor, blocos relacionados.</p>
+        </article>
+      </div>
+
+      <div class="note">
+        <b>O texto do estado vazio é conteúdo institucional.</b> Não é string de
+        interface nem entidade administrável: é fala da editora, e por isso mora
+        em <code>lib/content</code> junto com os demais textos aprovados. Viaja
+        pela camada de dados até o componente — nenhuma frase está escrita
+        dentro de um componente, e <code>EmptyState</code> não tem valor padrão.
+      </div>
+
+      <div class="note flag">
+        <b>Duas exceções, e as duas são decisão editorial.</b>
+        <p><b>Materiais gratuitos</b> oculta a lista sem mensagem, e o formulário fica. A banda é uma troca: o formulário pede e-mail, a lista é o que chega em resposta. Dizer “ainda não há materiais” ao lado de um formulário que segue coletando endereços tornaria a promessa explícita em vez de retirá-la.</p>
+        <p><b>Ficha técnica vazia</b> mantém o acordeão e abre em branco. Saber que nada foi registrado é diferente do painel não existir — e nenhum valor é inventado para preencher a lacuna.</p>
+      </div>
+    </section>
+
+    <!-- ===================== 12 · LAYOUTS ===================== -->
+    <section id="layouts">
+      <p class="kicker">Layouts <span>12</span></p>
+      <h2>Uma coluna de 1320, e o que acontece dentro dela</h2>
+
+      <div class="layout-demo" aria-hidden="true">
+        <div class="frame">
+          <span class="edge left">60</span>
+          <div class="content"><span>coluna de conteúdo — 1320px</span></div>
+          <span class="edge right">60</span>
+        </div>
+        <span class="frame-label">quadro do Figma — 1440px</span>
+      </div>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Padrão</th><th>Composição</th><th>Regra</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Container</strong></td>
+              <td>Máximo 1440, padding 24 / 40 / 60</td>
+              <td>Toda seção passa por ele. Nada encosta na borda da janela, exceto os carrosséis que sangram de propósito</td>
+            </tr>
+            <tr>
+              <td><strong>Section</strong></td>
+              <td><code>py-10 md:py-section</code>, tom claro ou ink</td>
+              <td>50px de respiro interno e 50px de fundo de página entre bandas — as bandas escuras leem como blocos separados, não como vizinhas coladas</td>
+            </tr>
+            <tr>
+              <td><strong>Hero</strong></td>
+              <td>Olho, título display, linha de apoio, CTAs</td>
+              <td>Entra em dois tempos. É o único lugar onde um bloco se divide, e mesmo ali nunca em mais de dois</td>
+            </tr>
+            <tr>
+              <td><strong>Grid de capas</strong></td>
+              <td>2 → 3 → 5 colunas, gap 33px em <code>xl</code></td>
+              <td>Cinco capas de 237px em ritmo de 33 somam 1317 — a fileira fecha na borda por construção</td>
+            </tr>
+            <tr>
+              <td><strong>Grid encostado</strong></td>
+              <td>1 → 2 → 3 colunas, hairline colapsada</td>
+              <td>Gêneros, comunidades e arquivo do blog. Célula fora de múltiplo deixa vão com hairline em volta — comportamento conhecido</td>
+            </tr>
+            <tr>
+              <td><strong>Duas colunas</strong></td>
+              <td><code>minmax(0, Npx)</code> com <code>justify-between</code></td>
+              <td>As larguras vêm do Figma e encolhem proporcionalmente. Empilham em <code>lg</code>, na ordem de leitura</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== 13 · IMAGENS ===================== -->
+    <section id="imagens">
+      <p class="kicker">Imagens <span>13</span></p>
+      <h2>Proporções fixas, alt obrigatório</h2>
+
+      <p class="lede">
+        Toda imagem passa por <code>next/image</code> com <code>sizes</code>
+        explícito. As proporções vêm do Figma e são declaradas como
+        <code>aspect-[w/h]</code>, de modo que o espaço é reservado antes do
+        arquivo chegar.
+      </p>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Onde</th><th>Campo</th><th>Proporção</th><th>Alt</th><th>Sem imagem</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Capa de livro</strong></td><td><code>Book.cover</code></td><td><code>237/322</code></td>
+              <td>“Capa de {título}”</td><td>Obrigatória — todo livro tem capa</td>
+            </tr>
+            <tr>
+              <td><strong>Galeria do livro</strong></td><td><code>Book.gallery</code></td><td><code>386/525</code> principal · <code>102/139</code> miniatura</td>
+              <td>Título do livro</td><td>Sem galeria, só a capa</td>
+            </tr>
+            <tr>
+              <td><strong>Retrato no carrossel</strong></td><td><code>Author.portrait</code></td><td>quadrado, circular</td>
+              <td>Nome do autor</td><td>Obrigatório</td>
+            </tr>
+            <tr>
+              <td><strong>Retrato na página do autor</strong></td><td><code>Author.portrait</code></td><td>160px, circular</td>
+              <td>“Retrato de {nome}”</td><td>Obrigatório</td>
+            </tr>
+            <tr>
+              <td><strong>Capa de publicação</strong></td><td><code>Post.coverImage</code></td><td><code>1322/743</code></td>
+              <td>Título do post</td><td><b>Renderiza nada.</b> A página abre no bloco de título, sem banner e sem retângulo cinza</td>
+            </tr>
+            <tr>
+              <td><strong>Galeria de publicação</strong></td><td><code>Post.gallery</code></td><td>—</td>
+              <td>—</td><td>O campo existe e <b>nada renderiza ainda</b> — o frame não desenha galeria</td>
+            </tr>
+            <tr>
+              <td><strong>Arte do podcast</strong></td><td><code>Episode.cover</code></td><td><code>587/539</code></td>
+              <td><code>cover.alt</code> próprio</td><td>Cai na imagem do programa</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>Duas regras que não são estéticas.</b>
+        <p><b>O retrato é dessaturado.</b> O Figma aplica <code>mix-blend-luminosity</code>; na página do autor o efeito é reproduzido com <code>grayscale</code>, que não depende do que está atrás da imagem.</p>
+        <p><b>Ausência não vira placeholder.</b> Um post sem capa abre sem capa. Reaproveitar capa de livro ou retrato de autor faria uma publicação parecer ilustrada quando não é.</p>
+      </div>
+    </section>
+
+    <!-- ===================== 14 · RESPONSIVIDADE ===================== -->
+    <section id="responsividade">
+      <p class="kicker">Responsividade <span>14</span></p>
+      <h2>Três larguras validadas, nenhum frame de referência</h2>
+
+      <div class="note flag">
+        <b>O Figma só tem desktop.</b> Não existem quadros de tablet nem de
+        mobile. O comportamento abaixo é o padrão que o projeto estabeleceu e
+        verificou no navegador — não é especificação de design. Onde um caso
+        novo não estiver coberto, a regra é perguntar, não improvisar.
+      </div>
+
+      <div class="bp-grid">
+        <div class="bp">
+          <span class="w">1440</span>
+          <span class="l">Referência</span>
+          <p>O quadro do Figma. Coluna de 1320, goteira de 60. Grades no máximo de colunas: capas em 5, cartões em 3.</p>
+        </div>
+        <div class="bp">
+          <span class="w">834</span>
+          <span class="l">Tablet</span>
+          <p>Entre <code>md</code> e <code>lg</code>. Goteira de 40, colunas duplas viram uma só, capas em 3 e cartões em 2. O menu vira o botão de navegação móvel.</p>
+        </div>
+        <div class="bp">
+          <span class="w">390</span>
+          <span class="l">Celular</span>
+          <p>Goteira de 24. Tudo empilha na ordem de leitura, capas em 2 e cartões em 1. Setas de carrossel somem — o gesto é a interação primária.</p>
+        </div>
+      </div>
+
+      <h4>Escadas de grade</h4>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Grade</th><th>390</th><th>640 · <code>sm</code></th><th>1024 · <code>lg</code></th><th>1280 · <code>xl</code></th></tr></thead>
+          <tbody>
+            <tr><td>Capas de livro</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">5</td></tr>
+            <tr><td>Gêneros</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">3</td></tr>
+            <tr><td>Cartões do blog</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">3</td></tr>
+            <tr><td>Cursos</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">3</td></tr>
+            <tr><td>Comunidades</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Os breakpoints são os padrão do Tailwind — <code>sm</code> 640,
+        <code>md</code> 768, <code>lg</code> 1024, <code>xl</code> 1280. Nenhum
+        foi customizado. Verificação de responsividade é feita sobre build de
+        produção, e a métrica que importa é
+        <code>documentElement.scrollWidth − clientWidth</code>: zero em todas as
+        rotas.
+      </p>
+    </section>
+
+    <!-- ===================== 15 · NAVEGAÇÃO ===================== -->
+    <section id="navegacao">
+      <p class="kicker">Regras de navegação <span>15</span></p>
+      <h2>Cartão é descoberta. Comércio é página</h2>
+
+      <div class="flow">
+        <div class="step"><span class="s-name">BookCard</span><span class="s-note">capa, gênero, título, autor</span></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="step"><span class="s-name">/catalogo/[slug]</span><span class="s-note">galeria, ficha, autor, comprar</span></div>
+      </div>
+      <div class="flow">
+        <div class="step"><span class="s-name">BlogPostCard</span><span class="s-note">tag, data, título, resumo</span></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="step"><span class="s-name">/blog/[slug]</span><span class="s-note">capa, corpo, tags, sidebar</span></div>
+      </div>
+
+      <p>
+        O cartão inteiro é o link, sem botão interno — âncora dentro de âncora é
+        HTML inválido. Vale para <code>BookCard</code> em quatro contextos,
+        <code>PostCard</code>, <code>BlogPostCard</code>, <code>GenreCard</code>
+        e <code>AuthorCard</code>.
+      </p>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Elemento</th><th>Cartão</th><th>Página individual</th></tr></thead>
+          <tbody>
+            <tr><td>Navegação para a obra</td><td class="ok-cell">Sim</td><td>—</td></tr>
+            <tr><td>Ler Amostra</td><td class="no-cell">Nunca</td><td class="ok-cell">Sim</td></tr>
+            <tr><td>Comprar · Pré-venda · Em breve</td><td class="no-cell">Nunca</td><td class="ok-cell">Sim</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note flag">
+        <b>Um cartão dentro de carrossel exige cuidado com o ponteiro.</b> O
+        <code>Carousel</code> só captura o ponteiro no primeiro movimento além
+        do limiar de arraste, <b>nunca no <code>pointerdown</code></b>. Enquanto
+        uma captura está ativa o navegador redireciona a interação para o
+        elemento que capturou, e <code>pointerup</code> e <code>click</code>
+        passam a disparar no trilho — a âncora nunca vê o clique, e todo cartão
+        da fileira para de navegar. O markup não denuncia isso: o
+        <code>href</code> continua lá. Só um clique real revela.
+      </div>
+    </section>
+
+    <!-- ===================== 16 · DO / DON'T ===================== -->
+    <section id="dodont">
+      <p class="kicker">Fazer / Evitar <span>16</span></p>
+      <h2>Quatro de cada</h2>
+
+      <div class="dd">
+        <div class="dd-col do">
+          <h4>Fazer</h4>
+          <ul>
+            <li><b>Usar tokens.</b> Cor, tipo, espaço e sombra têm nome. Se o valor não tem nome, ou o token existe e não foi encontrado, ou a decisão precisa entrar neste documento.</li>
+            <li><b>Reutilizar componentes.</b> Doze lugares renderizam o mesmo <code>EmptyState</code>; quatro contextos renderizam o mesmo <code>BookCard</code>. Nenhum deles pode divergir dos outros.</li>
+            <li><b>Manter respiro.</b> A coluna de 1320 e os 50px entre bandas são o que faz a página ler como editorial. Comprimir é a primeira coisa que a desfaz.</li>
+            <li><b>Respeitar hierarquia.</b> Um <code>&lt;h1&gt;</code> por rota, cabeçalho de seção como bloco, corpo em medida de leitura.</li>
+          </ul>
+        </div>
+        <div class="dd-col dont">
+          <h4>Evitar</h4>
+          <ul>
+            <li><b>Cores soltas.</b> Um hexadecimal no JSX é uma cor que ninguém consegue trocar depois. O mesmo vale para tamanho de fonte recomposto à mão.</li>
+            <li><b>Padrões novos sem documentação.</b> Um segundo estilo de hover, um segundo jeito de paginar, uma segunda sombra de cartão — cada um divide o sistema em dois.</li>
+            <li><b>Animação exagerada.</b> Escala, rotação, parallax, loop, e stagger acima de um quinto da duração. Movimento constante compete com o texto.</li>
+            <li><b>Duplicar componente.</b> Antes de criar, a seção 17. Um <code>variant</code> que produz dois layouts diferentes é dois componentes com um nome só.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 17 · CHECKLIST ===================== -->
+    <section id="checklist">
+      <p class="kicker">Checklist <span>17</span></p>
+      <h2>Cinco perguntas antes de criar algo novo</h2>
+
+      <ol class="checklist">
+        <li>
+          <h4>Já existe componente semelhante?</h4>
+          <p>Vinte e três em <code>components/ui/</code> e mais trinta por domínio. A resposta costuma ser sim — e o caso mais comum é precisar de uma prop, não de um arquivo.</p>
+        </li>
+        <li>
+          <h4>É variação ou componente novo?</h4>
+          <p>O teste que o projeto usa: conte as características que divergem. <code>PostCard</code> e <code>BlogPostCard</code> divergem em quatro de cinco, então são dois. Divergir em uma é uma prop.</p>
+        </li>
+        <li>
+          <h4>Usa os tokens existentes?</h4>
+          <p>Cor, tipo, espaço, sombra e raio já têm nome. Um valor novo precisa de justificativa e de uma linha neste documento — não de um arbitrário no JSX.</p>
+        </li>
+        <li>
+          <h4>Tem os estados definidos?</h4>
+          <p>Normal, hover, foco por teclado, desabilitado, carregando e <b>vazio</b>. O estado vazio é o mais esquecido e o que mais aparece: um componente de lista sem ele quebra a página no dia em que a lista esvaziar.</p>
+        </li>
+        <li>
+          <h4>Está documentado?</h4>
+          <p>Se a resposta for não, o componente ainda não existe — existe um arquivo. A regra final desta página vale para o que for criado depois dela.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===================== 18 · MAPEAMENTO ===================== -->
+    <section id="mapeamento">
+      <p class="kicker">Design → Código <span>18</span></p>
+      <h2>Onde cada coisa mora</h2>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Design</th><th>Código</th><th>Observação</th></tr></thead>
+          <tbody>
+            <tr><td>Tokens — cor, tipo, espaço, sombra, raio, motion CSS</td><td><code>src/app/globals.css</code></td><td>O bloco <code>@theme</code> É a configuração do Tailwind v4</td></tr>
+            <tr><td>Famílias tipográficas</td><td><code>src/lib/fonts.ts</code></td><td><code>next/font/google</code>; pesos da Plex Serif listados um a um</td></tr>
+            <tr><td>Motion System</td><td><code>src/motion/</code></td><td>Único lugar que importa <code>gsap</code>. Superfície pública: <code>Reveal</code></td></tr>
+            <tr><td>Presets e tempos de entrada</td><td><code>src/motion/presets.ts</code></td><td>Metade JS do sistema de movimento; a outra metade está no CSS</td></tr>
+            <tr><td>Button</td><td><code>src/components/ui/Button.tsx</code></td><td>Cinco variantes, união discriminada entre link e botão</td></tr>
+            <tr><td>EmptyState</td><td><code>src/components/ui/EmptyState.tsx</code></td><td>Sem valor padrão — a mensagem chega por prop</td></tr>
+            <tr><td>Container · Section · SectionHeading</td><td><code>src/components/ui/</code></td><td>A goteira, a banda e o cabeçalho de seção</td></tr>
+            <tr><td>BookCard</td><td><code>src/components/books/BookCard.tsx</code></td><td>Hover de capa em CSS, para o componente seguir de servidor</td></tr>
+            <tr><td>GenreCard · BlogPostCard · PostCard</td><td><code>src/components/genres/</code> · <code>src/components/blog/</code></td><td>Ver a seção 8 para por que são três</td></tr>
+            <tr><td>Formulários</td><td><code>src/components/ui/FieldShell.tsx</code> e vizinhos</td><td>Validação de interface em <code>src/lib/validation.ts</code></td></tr>
+            <tr><td>Texto institucional aprovado</td><td><code>src/lib/content/</code></td><td>Permanente e versionado. Inclui toda mensagem de estado vazio</td></tr>
+            <tr><td>Dados de entidade</td><td><code>src/lib/data/</code></td><td>Única camada que conhece a origem. Trocar para CMS reescreve só estas funções</td></tr>
+            <tr><td>Documento técnico irmão</td><td><code>docs/HANDOFF_DEV.md</code></td><td>Arquitetura de dados, modelos, rotas e integração. A seção 19 dele é o Motion System</td></tr>
+            <tr><td>Inventário editorial</td><td><code>docs/AUDITORIA_CONTEUDO.md</code></td><td>O que é texto aprovado, o que é placeholder e o que falta</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <b>A regra final.</b> Não criar token, componente, cor ou animação sem
+        atualizar este documento. Um sistema que existe só no código não é um
+        sistema — é um conjunto de escolhas que ninguém consegue repetir.
+      </div>
+    </section>
+
+    </main>
+  </div>
+
+  <footer class="closing">
+    <p>
+      <b>Design System — Editora Solano · versão 1.0 · 27/08/2026.</b>
+      Todos os valores foram lidos de <code>src/app/globals.css</code>,
+      <code>src/motion/presets.ts</code>, <code>src/lib/fonts.ts</code> e dos
+      componentes citados. As três famílias, a paleta e a hairline desta página
+      são as do sistema: o documento é uma amostra dele.
+    </p>
+    <p>
+      Onde uma decisão divergiu do Figma — o anel de foco, a sombra elevada da
+      capa, a paginação, os tokens de movimento — a divergência está anotada
+      junto com o motivo. O arquivo do Figma não carrega especificação de
+      movimento nem quadros de tablet e mobile.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var note = document.querySelector('.reduced-note');
+
+    function sync() {
+      if (note) note.hidden = !reduced.matches;
+      document.querySelectorAll('.play').forEach(function (b) {
+        b.disabled = reduced.matches;
+      });
+    }
+    sync();
+    if (reduced.addEventListener) reduced.addEventListener('change', sync);
+
+    document.querySelectorAll('.play').forEach(function (button) {
+      button.addEventListener('click', function () {
+        if (reduced.matches) return;
+        var tile = button.closest('.preset').querySelector('.tile');
+        tile.classList.remove('run');
+        void tile.offsetWidth; /* reinicia a animação */
+        tile.classList.add('run');
+      });
+    });
+  })();
+</script>
+</body>
+</html>
